@@ -1,0 +1,1143 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Econometrics I</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-03-14"><meta name="DC.source" content="s8.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Econometrics I</h1><pre>TA Christian Alem&aacute;n</pre><p><b>Session 8: Monday 14, March 2022</b></p><p><b>1: Measurement Error</b></p><div><ol><li>Measurement error in the dependent variable</li><li>Measurement error in the independent variable</li><li>IV Estimation</li></ol></div><p><b>The case with no measurement error</b></p><p>Consider the following DGP:</p><p><img src="s8_eq15558939362312831147.png" alt="$y^{*} = \beta_{0} +\beta_{1}x^{*} +e$"></p><p><img src="s8_eq17577467602314877098.png" alt="$e~N(0,2)$"></p><pre class="codeinput"><span class="comment">% Housekeeping</span>
+clear
+clc
+close <span class="string">all</span>
+
+
+<span class="comment">% Set seed for reproductibility</span>
+rng(123)
+
+N=1000;
+betas = [2 2]';
+err = sqrt(2).*randn(N,1);
+x2_star = 10+2.*randn(N,1);
+X_star = [ones(N,1) x2_star];
+y_star = X_star*betas +err;
+ols_func = @(X,y) (X'*X)\(X'*y);
+
+
+<span class="comment">% The OLS estimation of the true model is</span>
+names = str2mat(<span class="string">"beta_{0}"</span>, <span class="string">"beta_{1}"</span>);
+
+[b] = mc_ols(y_star, X_star, names, 0, 1);
+y_pred = X_star*b;
+
+figure(1)
+hold <span class="string">on</span>
+plot(x2_star,y_star,<span class="string">'kx'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'k'</span>)
+plot(x2_star, y_pred,<span class="string">'m-'</span>,<span class="string">'linewidth'</span>,1.1)
+ylabel(<span class="string">'$y_{i}$'</span>, <span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+xlabel(<span class="string">'$x_{2,i}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+title(<span class="string">'No measurement error'</span>)
+</pre><img vspace="5" hspace="5" src="s8_01.png" alt=""> <p><b>1.1: Measurement error in the dependent variable</b></p><p><img src="s8_eq04915839876678122334.png" alt="$y = y^{*}+\nu$"></p><p>In this case OLS is still unbiased and consistent.</p><pre class="codeinput">v =  2.*randn(N,1);
+y = y_star +v;
+
+<span class="comment">% OLS estimation</span>
+[b] = mc_ols(y, X_star, names, 0, 1);
+y_pred = X_star*b;
+
+figure(2)
+hold <span class="string">on</span>
+plot(x2_star,y,<span class="string">'kx'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'k'</span>)
+plot(x2_star, y_pred,<span class="string">'m-'</span>,<span class="string">'linewidth'</span>,1.1)
+ylabel(<span class="string">'$y_{i}$'</span>, <span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'fontsize'</span>,16)
+xlabel(<span class="string">'$x_{2,i}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'fontsize'</span>,16)
+title(<span class="string">'Measurement error in the dependent variable'</span>)
+
+<span class="comment">% See that with Montecarlo experiment:</span>
+no_reps = 1000;
+K = size(X_star,2);
+MC_betas = nan(no_reps,K);
+
+ <span class="keyword">for</span> i = 1:no_reps
+    e_rep = sqrt(4).*randn(N,1);  <span class="comment">%The error term of the regression</span>
+    y_star = X_star*betas +e_rep;
+    v = 2.*randn(N,1);
+    y_rep = y_star +v;
+    MC_betas(i,:) = (ols_func(X_star,y_rep))';
+ <span class="keyword">end</span>
+
+figure(3)
+histfit(MC_betas(:,2))
+xline(mean(MC_betas(:,2)),<span class="string">'k-'</span>,<span class="string">'linewidth'</span>,1.2)
+title(<span class="string">'$\hat{beta}_{1}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>)
+</pre><pre class="codeoutput">
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared 0.745898
+Sigma-squared 6.189020
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}       1.897       0.381       4.984       0.000
+beta_{1}       2.010       0.037      54.125       0.000
+
+*********************************************************
+</pre><img vspace="5" hspace="5" src="s8_02.png" alt=""> <img vspace="5" hspace="5" src="s8_03.png" alt=""> <p><b>1.2: Measurement error in the explanatory variable: Attenuation bias</b></p><p>% <img src="s8_eq00788865588598597430.png" alt="$x = x^{*}+\nu$"></p><p>Under attenuation bias then OLS estimator will be biased towards 0.</p><pre class="codeinput"><span class="comment">% Now suppose our dependent variable is measured with error</span>
+v =  8.*randn(N,1);
+x2 = x2_star +v;
+
+X = [ones(N,1) x2];
+
+<span class="comment">% OLS estimation</span>
+[b] = mc_ols(y_star, X, names, 0, 1);
+y_pred = X*b;
+
+figure(4)
+hold <span class="string">on</span>
+plot(x2,y_star,<span class="string">'kx'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'k'</span>)
+plot(x2, y_pred,<span class="string">'m-'</span>,<span class="string">'linewidth'</span>,1.2)
+ylabel(<span class="string">'$y_{i}$'</span>, <span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'fontsize'</span>,16)
+xlabel(<span class="string">'$x_{2,i}$'</span>,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>,<span class="string">'fontsize'</span>,16)
+xlim([2,18])
+ylim([5,40])
+title(<span class="string">'Measurement error in the independent variable'</span>)
+
+<span class="comment">% See that with Montecarlo experiment:</span>
+
+K = size(X,2);
+MC_betas = nan(no_reps,K);
+
+ <span class="keyword">for</span> i = 1:no_reps
+    e_rep = sqrt(4).*randn(N,1);  <span class="comment">%The error term of the regression</span>
+    y_star = X_star*betas +e_rep;
+    v = 2.*randn(N,1);
+    x2 = x2_star +v;       <span class="comment">%Classical additive measurement error</span>
+    X = [ones(N,1) x2];
+    MC_betas(i,:) = (ols_func(X,y_star))';
+ <span class="keyword">end</span>
+
+
+figure(5)
+hold <span class="string">on</span>
+histfit(MC_betas(:,2))
+p1 = xline(mean(MC_betas(:,2)),<span class="string">'k-'</span>,<span class="string">'linewidth'</span>,1.2);
+p2 = xline(2,<span class="string">'m-'</span>,<span class="string">'linewidth'</span>,1.2);
+title(<span class="string">'$\hat{beta}_{1}$'</span>,<span class="string">'Interpreter'</span>,<span class="string">'latex'</span>)
+legend([p1,p2],{<span class="string">'Biased Estimate'</span>,<span class="string">'True'</span>})
+</pre><pre class="codeoutput">
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared 0.049470
+Sigma-squared 21.048797
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}      20.894       0.229      91.191       0.000
+beta_{1}       0.125       0.017       7.207       0.000
+
+*********************************************************
+</pre><img vspace="5" hspace="5" src="s8_04.png" alt=""> <img vspace="5" hspace="5" src="s8_05.png" alt=""> <p><b>Dealing with measurement error</b></p><div><ol><li>IV</li><li>2SLS</li></ol></div><p><b>Example Instrumental Variable Estimation.</b></p><pre class="codeinput">n = 1000;
+
+z1 = 3.*randn(n,1);
+z2 = 2.*randn(n,1);
+
+x = 3-2*z2+4*z1+randn(n,1);
+y = 2+2*x +12*z2+randn(n,1);
+
+<span class="comment">% Case with no ommited variable</span>
+
+X = [ones(n,1) x z2];
+names = str2mat(<span class="string">"beta_{0}"</span>, <span class="string">"beta_{1}"</span>, <span class="string">"beta_{2}"</span>);
+b = mc_ols(y, X, names, 0, 1);
+</pre><pre class="codeoutput">
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared 0.998771
+Sigma-squared 0.998597
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}       2.043       0.033      62.688       0.000
+beta_{1}       2.001       0.003     770.861       0.000
+beta_{2}      12.004       0.017     688.998       0.000
+
+*********************************************************
+</pre><p>Suppose we only observe x and z1:</p><p>Case with ommited variable:</p><pre class="codeinput">X = [ones(n,1)  x];
+names = str2mat(<span class="string">"beta_{0}"</span>, <span class="string">"beta_{1}"</span>);
+[b] = mc_ols(y, X, names, 0, 1);
+</pre><pre class="codeoutput">
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared 0.413590
+Sigma-squared 475.999738
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}       3.591       0.710       5.059       0.000
+beta_{1}       1.423       0.054      26.531       0.000
+
+*********************************************************
+</pre><p><b>Solution</b></p><p>We can use z1 as an intrument:</p><div><ol><li>z1 is correlated with x</li><li>z1 is not correlation to z2, thus not correlated with the residuals</li></ol></div><p><b>Case 1: A very good instrument</b></p><pre class="codeinput">disp(<span class="string">'Check Correlation between x and z1'</span>)
+disp(corr(x,z1))
+
+Z = [ones(n,1) z1];
+
+[b] = mc_olsIV(y,X,Z, names, 0, 1);
+<span class="comment">%b_IV= inv(Z'*X)*Z'*y</span>
+</pre><pre class="codeoutput">Check Correlation between x and z1
+    0.9501
+
+
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared 0.354973
+Sigma-squared 523.580490
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}       1.920       0.724       2.652       0.008
+beta_{1}       1.959       0.119      16.477       0.000
+
+*********************************************************
+</pre><p>Two Stage Least Squares</p><pre class="codeinput">b_hat_x = inv(Z'*Z)*Z'*X;
+X_hat = Z*b_hat_x;
+
+[b] = mc_ols(y,X_hat, names, 0, 1);
+<span class="comment">%b_2SLS = inv(X_hat'*X_hat)*X_hat'*y</span>
+</pre><pre class="codeoutput">
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared 0.707395
+Sigma-squared 237.512636
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}       1.920       0.503       3.818       0.000
+beta_{1}       1.959       0.040      49.120       0.000
+
+*********************************************************
+</pre><p><b>Case 2: A good instrument</b></p><pre class="codeinput">z1= 0.9.*randn(n,1);
+x = 3- 2*z2+4*z1+randn(n,1);
+y = 2+ 2*x +12*z2+randn(n,1);
+
+disp(<span class="string">'Check Correlation between x and z1'</span>)
+disp(corr(x,z1))
+
+
+X = [ones(n,1)  x];
+Z = [ones(n,1) z1];
+
+[b] = mc_olsIV(y,X,Z, names, 0, 1);
+<span class="comment">%b_IV= inv(Z'*X)*Z'*y</span>
+</pre><pre class="codeoutput">Check Correlation between x and z1
+    0.6684
+
+
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared -0.859892
+Sigma-squared 553.530829
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}       1.339       0.748       1.791       0.074
+beta_{1}       2.130       0.412       5.170       0.000
+
+*********************************************************
+</pre><p>Two Stage Least Squares</p><pre class="codeinput">b_hat_x = inv(Z'*Z)*Z'*X;
+X_hat = Z*b_hat_x;
+
+[b] = mc_ols(y,X_hat, names, 0, 1);
+<span class="comment">%b_2SLS = inv(X_hat'*X_hat)*X_hat'*y</span>
+
+
+
+dert_stop = 1;
+</pre><pre class="codeoutput">
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared 0.194707
+Sigma-squared 239.666920
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}       1.339       0.645       2.076       0.038
+beta_{1}       2.130       0.137      15.534       0.000
+
+*********************************************************
+</pre><p><b>Case 3: A weak instrument</b></p><pre class="codeinput">z1= 0.07.*randn(n,1);
+x = 3- 2*z2+4*z1+randn(n,1);
+y = 2+ 2*x +12*z2+randn(n,1);
+
+disp(<span class="string">'Check Correlation between x and z1'</span>)
+disp(corr(x,z1))
+
+
+X = [ones(n,1)  x];
+Z = [ones(n,1) z1];
+
+[b] = mc_olsIV(y,X,Z, names, 0, 1);
+<span class="comment">%b_IV= inv(Z'*X)*Z'*y</span>
+</pre><pre class="codeoutput">Check Correlation between x and z1
+    0.0707
+
+
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared -0.326477
+Sigma-squared 319.804815
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}       5.832       0.417      14.000       0.000
+beta_{1}       0.632       4.026       0.157       0.875
+
+*********************************************************
+</pre><p>Two Stage Least Squares</p><pre class="codeinput">b_hat_x = inv(Z'*Z)*Z'*X;
+X_hat = Z*b_hat_x;
+
+[b] = mc_ols(y,X_hat, names, 0, 1);
+<span class="comment">%b_2SLS = inv(X_hat'*X_hat)*X_hat'*y</span>
+
+
+dert_stop = 1;
+</pre><p>Functions</p><pre class="codeinput"><span class="comment">%-------------------------------------------------------------</span>
+
+<span class="keyword">function</span> [beta,sigma,r]= ols(y,x)
+<span class="comment">% Simple OLS regression</span>
+t = size(x,1);
+beta = inv (x'*x) * x' * y;
+sigma = (y-x*beta)'*(y-x*beta)/(t-rank(x));
+r = y - x*beta;
+
+<span class="keyword">end</span>
+<span class="comment">%-------------------------------------------------------------</span>
+
+
+<span class="keyword">function</span> prettyprint(mat, rlabels, clabels)
+<span class="comment">%{
+</span><span class="comment">This function prints matrices with row and column labels
+</span><span class="comment">
+</span><span class="comment">Copyright (C) 2010 Michael Creel &lt;michael.creel@uab.es&gt;
+</span><span class="comment">This program is free software; you can redistribute it and/or modify
+</span><span class="comment">it under the terms of the GNU General Public License as published by
+</span><span class="comment">the Free Software Foundation
+</span><span class="comment">%}
+</span>	<span class="comment">% left pad the column labels</span>
+	a = size(rlabels,2);
+	<span class="keyword">for</span> i = 1:a
+		fprintf(<span class="string">' '</span>);
+	<span class="keyword">end</span>
+	fprintf(<span class="string">'  '</span>);
+
+	<span class="comment">% print the column labels</span>
+    <span class="keyword">try</span>
+	clabels = [<span class="string">'        '</span>;clabels]; <span class="comment">% pad to 8 characters wide</span>
+    <span class="keyword">catch</span>
+        dert_stop = 1;
+    <span class="keyword">end</span>
+	clabels = strjust(clabels,<span class="string">'right'</span>);
+
+	k = size(mat,2);
+	<span class="keyword">for</span> i = 1:k
+		fprintf(<span class="string">'%s  '</span>,clabels(i+1,:));
+	<span class="keyword">end</span>
+
+	<span class="comment">% now print the row labels and rows</span>
+	fprintf(<span class="string">'\n'</span>);
+	k = size(mat,1);
+	<span class="keyword">for</span> i = 1:k
+		<span class="keyword">if</span> ischar(rlabels(i,:))
+			fprintf(rlabels(i,:));
+		<span class="keyword">else</span>
+			fprintf(<span class="string">'%i'</span>, rlabels(i,:));
+		<span class="keyword">end</span>
+		fprintf(<span class="string">'  %10.3f'</span>, mat(i,:));
+		fprintf(<span class="string">'\n'</span>);
+	<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+
+<span class="keyword">function</span> result = eemult_mv(m,v)
+
+	<span class="keyword">if</span> not(ismatrix(m))
+		error(<span class="string">"eemult_mv: first arg must be a matrix"</span>);
+    <span class="keyword">end</span>
+
+	<span class="keyword">if</span> not(isvector(v))
+		error(<span class="string">"eemult_mv: second arg must be a vector"</span>);
+    <span class="keyword">end</span>
+
+	[rm, cm] = size(m);
+	[rv, cv] = size(v);
+
+	<span class="keyword">if</span> (rm == rv)
+		v = kron(v, ones(1,cm));
+		result = m .* v;
+	<span class="keyword">elseif</span> (cm == cv)
+		v = kron(v, ones(rm, 1));
+		result = m .* v;
+	<span class="keyword">else</span>
+		error(<span class="string">"eemult_mv: dimension of vector must match one of the dimensions of the matrix"</span>);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="comment">%-------------------------------------------------------------</span>
+
+<span class="keyword">function</span> [b, varb, e, ess] = mc_ols(y, x, names, silent, regularvc)
+<span class="comment">%{
+</span><span class="comment">
+</span><span class="comment">Copyright (C) 2010 Michael Creel &lt;michael.creel@uab.es&gt;
+</span><span class="comment">This program is free software; you can redistribute it and/or modify
+</span><span class="comment">it under the terms of the GNU General Public License as published by
+</span><span class="comment">the Free Software Foundation
+</span><span class="comment">
+</span><span class="comment">Calculates ordinary LS estimator using the Huber-White heteroscedastic
+</span><span class="comment">consistent variance estimator.
+</span><span class="comment">
+</span><span class="comment"> inputs:
+</span><span class="comment"> y: dep variable
+</span><span class="comment"> x: matrix of regressors
+</span><span class="comment"> names (optional) names of regressors
+</span><span class="comment"> silent (bool) default false. controls screen output
+</span><span class="comment"> regularvc (bool) default false. use normal varcov estimator, instead of het consistent (default)
+</span><span class="comment">
+</span><span class="comment"> outputs:
+</span><span class="comment"> b: estimated coefficients
+</span><span class="comment"> varb: estimated covariance matrix of coefficients (Huber-White by default, ordinary OLS if requested with switch)
+</span><span class="comment"> e: ols residuals
+</span><span class="comment"> ess: sum of squared residuals
+</span><span class="comment">
+</span><span class="comment">%}
+</span>	k = size(x,2);
+
+	<span class="keyword">if</span> nargin &lt; 5 regularvc = 0; <span class="keyword">end</span>
+	<span class="keyword">if</span> nargin &lt; 4 silent = 0; <span class="keyword">end</span>
+	<span class="keyword">if</span> (nargin &lt; 3) || (size(names,1) ~= k)
+		names = 1:k;
+		names = names';
+	<span class="keyword">end</span>
+
+	[b, sigsq, e] = ols(y,x);
+
+
+
+	xx_inv = inv(x'*x);
+	n = size(x,1);
+
+	ess = e' * e;
+
+	<span class="comment">% Ordinary or het. consistent variance estimate</span>
+	<span class="keyword">if</span> regularvc==1
+		varb = xx_inv*sigsq;
+    <span class="keyword">end</span>
+
+	seb = sqrt(diag(varb));
+	t = b ./ seb;
+
+	tss = y - mean(y);
+	tss = tss' * tss;
+	rsq = 1 - ess / tss;
+
+	labels = char(<span class="string">'estimate'</span>, <span class="string">'st.err.'</span>, <span class="string">'t-stat.'</span>, <span class="string">'p-value'</span>);
+	<span class="keyword">if</span> silent==0
+		fprintf(<span class="string">'\n*********************************************************\n'</span>);
+		fprintf(<span class="string">'OLS estimation results\n'</span>);
+		fprintf(<span class="string">'Observations %d\n'</span>,n);
+		fprintf(<span class="string">'R-squared %f\n'</span>,rsq);
+		fprintf(<span class="string">'Sigma-squared %f\n'</span>,sigsq);
+		p = 2 - 2*tcdf(abs(t), n - k);
+		results = [b, seb, t, p];
+		<span class="keyword">if</span> regularvc
+			fprintf(<span class="string">'\nResults (Ordinary var-cov estimator)\n\n'</span>);
+		<span class="keyword">else</span>
+			fprintf(<span class="string">'\nResults (Het. consistent var-cov estimator)\n\n'</span>);
+		<span class="keyword">end</span>
+		prettyprint(results, names, labels);
+		fprintf(<span class="string">'\n*********************************************************\n'</span>);
+	<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+<span class="comment">%-------------------------------------------------------------</span>
+
+<span class="keyword">function</span> [b, varb, e, ess] = mc_olsIV(y, x, z, names, silent, regularvc)
+<span class="comment">%{
+</span><span class="comment">
+</span><span class="comment">Copyright (C) 2010 Michael Creel &lt;michael.creel@uab.es&gt;
+</span><span class="comment">This program is free software; you can redistribute it and/or modify
+</span><span class="comment">it under the terms of the GNU General Public License as published by
+</span><span class="comment">the Free Software Foundation
+</span><span class="comment">
+</span><span class="comment">Calculates ordinary LS estimator using the Huber-White heteroscedastic
+</span><span class="comment">consistent variance estimator.
+</span><span class="comment">
+</span><span class="comment"> inputs:
+</span><span class="comment"> y: dep variable
+</span><span class="comment"> x: matrix of regressors
+</span><span class="comment"> names (optional) names of regressors
+</span><span class="comment"> silent (bool) default false. controls screen output
+</span><span class="comment"> regularvc (bool) default false. use normal varcov estimator, instead of het consistent (default)
+</span><span class="comment">
+</span><span class="comment"> outputs:
+</span><span class="comment"> b: estimated coefficients
+</span><span class="comment"> varb: estimated covariance matrix of coefficients (Huber-White by default, ordinary OLS if requested with switch)
+</span><span class="comment"> e: ols residuals
+</span><span class="comment"> ess: sum of squared residuals
+</span><span class="comment">
+</span><span class="comment">%}
+</span>	k = size(x,2);
+
+	<span class="keyword">if</span> nargin &lt; 6 regularvc = 0; <span class="keyword">end</span>
+	<span class="keyword">if</span> nargin &lt; 5 silent = 0; <span class="keyword">end</span>
+	<span class="keyword">if</span> (nargin &lt; 4) || (size(names,1) ~= k)
+		names = 1:k;
+		names = names';
+	<span class="keyword">end</span>
+
+	<span class="comment">%[b, sigsq, e] = ols(y,x);</span>
+    t = size(x,1);
+    b = inv(z'*x)*z'*y;
+    sigsq = (y-x*b)'*(y-x*b)/(t-rank(x));
+    e = y - x*b;
+
+
+
+	xx_inv = inv(z'*x);
+	n = size(x,1);
+
+	ess = e' * e;
+
+	<span class="comment">% Ordinary or het. consistent variance estimate</span>
+	<span class="keyword">if</span> regularvc==1
+		varb = xx_inv*sigsq;
+	<span class="keyword">end</span>
+
+	seb = sqrt(diag(varb));
+	t = b ./ seb;
+
+	tss = y - mean(y);
+	tss = tss' * tss;
+	rsq = 1 - ess / tss;
+
+	labels = char(<span class="string">'estimate'</span>, <span class="string">'st.err.'</span>, <span class="string">'t-stat.'</span>, <span class="string">'p-value'</span>);
+	<span class="keyword">if</span> silent==0
+		fprintf(<span class="string">'\n*********************************************************\n'</span>);
+		fprintf(<span class="string">'OLS estimation results\n'</span>);
+		fprintf(<span class="string">'Observations %d\n'</span>,n);
+		fprintf(<span class="string">'R-squared %f\n'</span>,rsq);
+		fprintf(<span class="string">'Sigma-squared %f\n'</span>,sigsq);
+		p = 2 - 2*tcdf(abs(t), n - k);
+		results = [b, seb, t, p];
+		<span class="keyword">if</span> regularvc
+			fprintf(<span class="string">'\nResults (Ordinary var-cov estimator)\n\n'</span>);
+		<span class="keyword">else</span>
+			fprintf(<span class="string">'\nResults (Het. consistent var-cov estimator)\n\n'</span>);
+		<span class="keyword">end</span>
+		prettyprint(results, names, labels);
+		fprintf(<span class="string">'\n*********************************************************\n'</span>);
+	<span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">
+*********************************************************
+OLS estimation results
+Observations 1000
+R-squared 0.904879
+Sigma-squared 1.961686
+
+Results (Ordinary var-cov estimator)
+
+          estimate   st.err.   t-stat.   p-value  
+beta_{0}       1.621       0.214       7.566       0.000
+beta_{1}       2.038       0.021      97.437       0.000
+
+*********************************************************
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Econometrics I 
+%  TA Christian Alemán
+% 
+% *Session 8: Monday 14, March 2022*
+%
+% *1: Measurement Error*
+%
+% # Measurement error in the dependent variable
+% # Measurement error in the independent variable
+% # IV Estimation
+%
+% *The case with no measurement error*
+%
+% Consider the following DGP:
+%
+% $y^{*} = \beta_{0} +\beta_{1}x^{*} +e$
+%
+% $e~N(0,2)$
+
+% Housekeeping
+clear
+clc
+close all
+
+
+% Set seed for reproductibility
+rng(123)
+
+N=1000;
+betas = [2 2]';
+err = sqrt(2).*randn(N,1);
+x2_star = 10+2.*randn(N,1);
+X_star = [ones(N,1) x2_star];
+y_star = X_star*betas +err;
+ols_func = @(X,y) (X'*X)\(X'*y);
+
+
+% The OLS estimation of the true model is
+names = str2mat("beta_{0}", "beta_{1}");
+
+[b] = mc_ols(y_star, X_star, names, 0, 1);
+y_pred = X_star*b;
+
+figure(1)
+hold on
+plot(x2_star,y_star,'kx','MarkerFaceColor','k')
+plot(x2_star, y_pred,'m-','linewidth',1.1)
+ylabel('$y_{i}$', 'interpreter','latex')
+xlabel('$x_{2,i}$','interpreter','latex')
+title('No measurement error')
+
+
+
+%%
+% *1.1: Measurement error in the dependent variable*
+% 
+% $y = y^{*}+\nu$
+%
+% In this case OLS is still unbiased and consistent.
+
+v =  2.*randn(N,1);  
+y = y_star +v;     
+
+% OLS estimation
+[b] = mc_ols(y, X_star, names, 0, 1);
+y_pred = X_star*b;
+
+figure(2)
+hold on
+plot(x2_star,y,'kx','MarkerFaceColor','k')
+plot(x2_star, y_pred,'m-','linewidth',1.1)
+ylabel('$y_{i}$', 'interpreter','latex','fontsize',16)
+xlabel('$x_{2,i}$','interpreter','latex','fontsize',16)
+title('Measurement error in the dependent variable')
+
+% See that with Montecarlo experiment:
+no_reps = 1000;
+K = size(X_star,2);
+MC_betas = nan(no_reps,K);
+
+ for i = 1:no_reps
+    e_rep = sqrt(4).*randn(N,1);  %The error term of the regression
+    y_star = X_star*betas +e_rep;
+    v = 2.*randn(N,1);
+    y_rep = y_star +v;
+    MC_betas(i,:) = (ols_func(X_star,y_rep))';  
+ end
+    
+figure(3)
+histfit(MC_betas(:,2))
+xline(mean(MC_betas(:,2)),'k-','linewidth',1.2)
+title('$\hat{beta}_{1}$','Interpreter','latex')
+
+
+
+%%
+% *1.2: Measurement error in the explanatory variable: Attenuation bias*
+%
+% % $x = x^{*}+\nu$
+%
+% Under attenuation bias then OLS estimator will be biased towards 0.
+
+% Now suppose our dependent variable is measured with error 
+v =  8.*randn(N,1);   
+x2 = x2_star +v;      
+
+X = [ones(N,1) x2];
+
+% OLS estimation
+[b] = mc_ols(y_star, X, names, 0, 1);
+y_pred = X*b;
+
+figure(4)
+hold on
+plot(x2,y_star,'kx','MarkerFaceColor','k')
+plot(x2, y_pred,'m-','linewidth',1.2)
+ylabel('$y_{i}$', 'interpreter','latex','fontsize',16)
+xlabel('$x_{2,i}$','interpreter','latex','fontsize',16)
+xlim([2,18])
+ylim([5,40])
+title('Measurement error in the independent variable')
+
+% See that with Montecarlo experiment:
+
+K = size(X,2);
+MC_betas = nan(no_reps,K);
+
+ for i = 1:no_reps
+    e_rep = sqrt(4).*randn(N,1);  %The error term of the regression
+    y_star = X_star*betas +e_rep;
+    v = 2.*randn(N,1);
+    x2 = x2_star +v;       %Classical additive measurement error
+    X = [ones(N,1) x2];
+    MC_betas(i,:) = (ols_func(X,y_star))';  
+ end
+    
+
+figure(5)
+hold on
+histfit(MC_betas(:,2))
+p1 = xline(mean(MC_betas(:,2)),'k-','linewidth',1.2);
+p2 = xline(2,'m-','linewidth',1.2);
+title('$\hat{beta}_{1}$','Interpreter','latex')
+legend([p1,p2],{'Biased Estimate','True'})
+
+
+
+%%
+% *Dealing with measurement error*
+%
+% # IV
+% # 2SLS
+
+
+%% 
+% *Example Instrumental Variable Estimation.*
+
+n = 1000;
+
+z1 = 3.*randn(n,1);
+z2 = 2.*randn(n,1);
+
+x = 3-2*z2+4*z1+randn(n,1);
+y = 2+2*x +12*z2+randn(n,1);
+
+% Case with no ommited variable
+
+X = [ones(n,1) x z2];
+names = str2mat("beta_{0}", "beta_{1}", "beta_{2}");
+b = mc_ols(y, X, names, 0, 1);
+
+
+%% 
+% Suppose we only observe x and z1:
+% 
+% Case with ommited variable:
+
+X = [ones(n,1)  x];
+names = str2mat("beta_{0}", "beta_{1}");
+[b] = mc_ols(y, X, names, 0, 1);
+
+
+%% 
+% *Solution*
+%
+% We can use z1 as an intrument:
+%
+% # z1 is correlated with x
+% # z1 is not correlation to z2, thus not correlated with the residuals
+%
+% *Case 1: A very good instrument*
+
+disp('Check Correlation between x and z1')
+disp(corr(x,z1))
+
+Z = [ones(n,1) z1];
+
+[b] = mc_olsIV(y,X,Z, names, 0, 1);
+%b_IV= inv(Z'*X)*Z'*y
+
+%%
+% Two Stage Least Squares
+
+b_hat_x = inv(Z'*Z)*Z'*X; 
+X_hat = Z*b_hat_x;
+
+[b] = mc_ols(y,X_hat, names, 0, 1);
+%b_2SLS = inv(X_hat'*X_hat)*X_hat'*y
+
+
+%%
+% *Case 2: A good instrument*
+
+z1= 0.9.*randn(n,1);
+x = 3- 2*z2+4*z1+randn(n,1);
+y = 2+ 2*x +12*z2+randn(n,1);
+
+disp('Check Correlation between x and z1')
+disp(corr(x,z1))
+
+
+X = [ones(n,1)  x];
+Z = [ones(n,1) z1];
+
+[b] = mc_olsIV(y,X,Z, names, 0, 1);
+%b_IV= inv(Z'*X)*Z'*y
+
+%%
+% Two Stage Least Squares
+
+b_hat_x = inv(Z'*Z)*Z'*X; 
+X_hat = Z*b_hat_x;
+
+[b] = mc_ols(y,X_hat, names, 0, 1);
+%b_2SLS = inv(X_hat'*X_hat)*X_hat'*y
+
+
+
+dert_stop = 1;
+
+%%
+% *Case 3: A weak instrument*
+
+z1= 0.07.*randn(n,1);
+x = 3- 2*z2+4*z1+randn(n,1);
+y = 2+ 2*x +12*z2+randn(n,1);
+
+disp('Check Correlation between x and z1')
+disp(corr(x,z1))
+
+
+X = [ones(n,1)  x];
+Z = [ones(n,1) z1];
+
+[b] = mc_olsIV(y,X,Z, names, 0, 1);
+%b_IV= inv(Z'*X)*Z'*y
+
+%%
+% Two Stage Least Squares
+
+b_hat_x = inv(Z'*Z)*Z'*X; 
+X_hat = Z*b_hat_x;
+
+[b] = mc_ols(y,X_hat, names, 0, 1);
+%b_2SLS = inv(X_hat'*X_hat)*X_hat'*y
+
+
+dert_stop = 1;
+
+%% 
+% Functions
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+
+function [beta,sigma,r]= ols(y,x)
+% Simple OLS regression
+t = size(x,1);
+beta = inv (x'*x) * x' * y;
+sigma = (y-x*beta)'*(y-x*beta)/(t-rank(x));
+r = y - x*beta;
+
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+
+
+function prettyprint(mat, rlabels, clabels)
+%{
+This function prints matrices with row and column labels
+
+Copyright (C) 2010 Michael Creel <michael.creel@uab.es>
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation
+%}
+	% left pad the column labels 
+	a = size(rlabels,2);
+	for i = 1:a
+		fprintf(' ');
+	end
+	fprintf('  ');
+
+	% print the column labels
+    try
+	clabels = ['        ';clabels]; % pad to 8 characters wide
+    catch
+        dert_stop = 1;
+    end
+	clabels = strjust(clabels,'right');
+
+	k = size(mat,2);
+	for i = 1:k
+		fprintf('%s  ',clabels(i+1,:));
+	end
+
+	% now print the row labels and rows
+	fprintf('\n');
+	k = size(mat,1);
+	for i = 1:k
+		if ischar(rlabels(i,:))
+			fprintf(rlabels(i,:));
+		else
+			fprintf('%i', rlabels(i,:));
+		end
+		fprintf('  %10.3f', mat(i,:));
+		fprintf('\n');
+	end
+end
+
+
+function result = eemult_mv(m,v)
+
+	if not(ismatrix(m))
+		error("eemult_mv: first arg must be a matrix");
+    end
+
+	if not(isvector(v))
+		error("eemult_mv: second arg must be a vector");
+    end
+
+	[rm, cm] = size(m);
+	[rv, cv] = size(v);
+	
+	if (rm == rv)
+		v = kron(v, ones(1,cm));
+		result = m .* v;
+	elseif (cm == cv)
+		v = kron(v, ones(rm, 1));	
+		result = m .* v;
+	else
+		error("eemult_mv: dimension of vector must match one of the dimensions of the matrix");	
+    end
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+
+function [b, varb, e, ess] = mc_ols(y, x, names, silent, regularvc)
+%{    
+    
+Copyright (C) 2010 Michael Creel <michael.creel@uab.es>
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation
+    
+Calculates ordinary LS estimator using the Huber-White heteroscedastic
+consistent variance estimator.
+
+ inputs:
+ y: dep variable
+ x: matrix of regressors
+ names (optional) names of regressors
+ silent (bool) default false. controls screen output
+ regularvc (bool) default false. use normal varcov estimator, instead of het consistent (default)
+
+ outputs:
+ b: estimated coefficients
+ varb: estimated covariance matrix of coefficients (Huber-White by default, ordinary OLS if requested with switch)
+ e: ols residuals
+ ess: sum of squared residuals
+    
+%}    
+	k = size(x,2);
+
+	if nargin < 5 regularvc = 0; end
+	if nargin < 4 silent = 0; end
+	if (nargin < 3) || (size(names,1) ~= k)
+		names = 1:k;
+		names = names';
+	end
+
+	[b, sigsq, e] = ols(y,x);
+    
+
+
+	xx_inv = inv(x'*x);
+	n = size(x,1);
+
+	ess = e' * e;
+
+	% Ordinary or het. consistent variance estimate
+	if regularvc==1
+		varb = xx_inv*sigsq;
+    end
+
+	seb = sqrt(diag(varb));
+	t = b ./ seb;
+
+	tss = y - mean(y);
+	tss = tss' * tss;
+	rsq = 1 - ess / tss;
+
+	labels = char('estimate', 'st.err.', 't-stat.', 'p-value');
+	if silent==0
+		fprintf('\n*********************************************************\n');
+		fprintf('OLS estimation results\n');
+		fprintf('Observations %d\n',n);
+		fprintf('R-squared %f\n',rsq);
+		fprintf('Sigma-squared %f\n',sigsq);
+		p = 2 - 2*tcdf(abs(t), n - k);
+		results = [b, seb, t, p];
+		if regularvc
+			fprintf('\nResults (Ordinary var-cov estimator)\n\n');
+		else
+			fprintf('\nResults (Het. consistent var-cov estimator)\n\n');
+		end
+		prettyprint(results, names, labels);
+		fprintf('\n*********************************************************\n');
+	end
+
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+
+function [b, varb, e, ess] = mc_olsIV(y, x, z, names, silent, regularvc)
+%{    
+    
+Copyright (C) 2010 Michael Creel <michael.creel@uab.es>
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation
+    
+Calculates ordinary LS estimator using the Huber-White heteroscedastic
+consistent variance estimator.
+
+ inputs:
+ y: dep variable
+ x: matrix of regressors
+ names (optional) names of regressors
+ silent (bool) default false. controls screen output
+ regularvc (bool) default false. use normal varcov estimator, instead of het consistent (default)
+
+ outputs:
+ b: estimated coefficients
+ varb: estimated covariance matrix of coefficients (Huber-White by default, ordinary OLS if requested with switch)
+ e: ols residuals
+ ess: sum of squared residuals
+    
+%}    
+	k = size(x,2);
+
+	if nargin < 6 regularvc = 0; end
+	if nargin < 5 silent = 0; end
+	if (nargin < 4) || (size(names,1) ~= k)
+		names = 1:k;
+		names = names';
+	end
+
+	%[b, sigsq, e] = ols(y,x);
+    t = size(x,1);
+    b = inv(z'*x)*z'*y;
+    sigsq = (y-x*b)'*(y-x*b)/(t-rank(x));
+    e = y - x*b;
+
+    
+    
+	xx_inv = inv(z'*x);
+	n = size(x,1);
+
+	ess = e' * e;
+
+	% Ordinary or het. consistent variance estimate
+	if regularvc==1
+		varb = xx_inv*sigsq;
+	end
+
+	seb = sqrt(diag(varb));
+	t = b ./ seb;
+
+	tss = y - mean(y);
+	tss = tss' * tss;
+	rsq = 1 - ess / tss;
+
+	labels = char('estimate', 'st.err.', 't-stat.', 'p-value');
+	if silent==0
+		fprintf('\n*********************************************************\n');
+		fprintf('OLS estimation results\n');
+		fprintf('Observations %d\n',n);
+		fprintf('R-squared %f\n',rsq);
+		fprintf('Sigma-squared %f\n',sigsq);
+		p = 2 - 2*tcdf(abs(t), n - k);
+		results = [b, seb, t, p];
+		if regularvc
+			fprintf('\nResults (Ordinary var-cov estimator)\n\n');
+		else
+			fprintf('\nResults (Het. consistent var-cov estimator)\n\n');
+		end
+		prettyprint(results, names, labels);
+		fprintf('\n*********************************************************\n');
+	end
+
+end
+
+##### SOURCE END #####
+--></body></html>
