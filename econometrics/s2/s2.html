@@ -1,0 +1,760 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Econometrics I</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-01-31"><meta name="DC.source" content="s2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Econometrics I</h1><pre>TA Christian Alem&aacute;n</pre><p><b>Session 2: Tuesday 1st, February 2022</b></p><p><b>Activity 1: Basic Matrix Operations</b></p><p><b>A simple structural national income model</b></p><p><img src="s2_eq11734283466263356072.png" alt="$Y = C + I_{0}+ G_{0}$"></p><p><img src="s2_eq08237653340960329936.png" alt="$C = a +bY$"></p><p>Boring solution:</p><p><img src="s2_eq00238636735775643446.png" alt="$Y^{*} = \frac{1}{1-b}[I_{0}+G_{0}+a]$"></p><p><img src="s2_eq10205195815201881564.png" alt="$C^{*} = \frac{1}{1-b}[b(I_{0}+G_{0})+a]$"></p><p>Using Linear Algebra: Transform to <img src="s2_eq14519867682667996813.png" alt="$\,\,\,Ax=d$"> form</p><p><img src="s2_eq07288002101229768351.png" alt="$A = \left[\begin{array}{cc}1 &amp; 0 \\ 0 &amp; a \end{array}\right]$"> , <img src="s2_eq10061357105286525760.png" alt="$x = \left[\begin{array}{c}Y \\ C  \end{array}\right]$"> , <img src="s2_eq13145882043246743807.png" alt="$d = \left[\begin{array}{c}I_{0}+G_{0} \\ a \end{array}\right]$"></p><p><img src="s2_eq00783820075637254017.png" alt="$x = A^{-1}d$"></p><pre class="codeinput"><span class="comment">% Housekeeping</span>
+clear <span class="string">all</span>
+close <span class="string">all</span>
+clc
+<span class="comment">%</span>
+par.b = 0.5;    <span class="comment">% Propensity to consume</span>
+par.a = 1;      <span class="comment">% Basic Consumption</span>
+par.I = 0;      <span class="comment">% Investment</span>
+par.G = 0.2;    <span class="comment">% Goverment Spending</span>
+A_mat = [1,-1;-par.b,1];
+d_vec = [par.I+par.G; par.a];
+
+<span class="comment">% Boring Solution:</span>
+Y_an = 1/(1-par.b).*(par.I+par.G+par.a);
+C_an = 1/(1-par.b).*(par.b*(par.I+par.G)+par.a);
+disp([])
+opt.v_names = {<span class="string">'Y'</span>,<span class="string">'C'</span>};
+c_table = array2table([Y_an,C_an],<span class="string">'VariableNames'</span>,opt.v_names);
+disp(<span class="string">'Boring Solution'</span>)
+disp(<span class="string">''</span>)
+disp(c_table)
+
+<span class="comment">% Using Linear Algebra:</span>
+x = inv(A_mat)*d_vec;
+x = A_mat\d_vec;
+c_table = array2table(x',<span class="string">'VariableNames'</span>,opt.v_names);
+disp(<span class="string">'Solution with linear algebra'</span>)
+disp(<span class="string">''</span>)
+disp(c_table)
+</pre><pre class="codeoutput">Boring Solution
+     Y      C 
+    ___    ___
+
+    2.4    2.2
+
+Solution with linear algebra
+     Y      C 
+    ___    ___
+
+    2.4    2.2
+
+</pre><p><b>Activity 2: Inverses and their properties</b></p><p>Define the inverse of matrix <img src="s2_eq12362013959998143435.png" alt="$X$"> as <img src="s2_eq06358073190546747694.png" alt="$X^{-1} = \frac{1}{|X|}adj X$"></p><p>Such that <img src="s2_eq07922537842322992066.png" alt="$XX^{-1}=X^{-1}X = I$"></p><p>-The inverse is a derived matrix that may not exist.</p><p>-The inverse of a matrix is defined if:</p><div><ol><li><img src="s2_eq12362013959998143435.png" alt="$X$"> is a square matrix and</li><li><img src="s2_eq12362013959998143435.png" alt="$X$"> is is said to be nonsingular. Non-singularity: <img src="s2_eq11206115615656929943.png" alt="$\Leftrightarrow$"> squareness and linear independence</li></ol></div><p>- More in Non-Singularity:</p><div><ol><li>A singular matrix has determinant equal to zero</li><li>A nonsingular matrix hasa non-zero determinant.</li></ol></div><p><b>2.1 Linear independence</b></p><p>Let <img src="s2_eq12362013959998143435.png" alt="$X$"> be matrix <img src="s2_eq09966792289450506937.png" alt="$(n,n)$"></p><p>and <img src="s2_eq03158747792916826732.png" alt="$v$"> a column vector <img src="s2_eq11014847984291653532.png" alt="$(n,1)$"> collecting the <img src="s2_eq08984225997457563733.png" alt="$n$"> row vectors in <img src="s2_eq12362013959998143435.png" alt="$X$"></p><p>Linear independence requiers that the only set of scalars <img src="s2_eq11468093511171902079.png" alt="$\lambda_{i}$"> which can satisfy:</p><p><img src="s2_eq04233362350033388530.png" alt="$\sum_{i=1}^{n}\lambda_{i}v_{i}=0$"></p><p>are <img src="s2_eq09744824715598755896.png" alt="$\lambda_{i}=0$"> for all <img src="s2_eq05671228016298599287.png" alt="$i$"></p><p>Example 1:</p><p><img src="s2_eq02143686478653965004.png" alt="$X = \left[\begin{array}{ccc}3 &amp; 4&amp; 5 \\ 0 &amp; 1&amp;2 \\ 6&amp;8&amp;10\end{array}\right] = \left[\begin{array}{c}v_{1}\\v_{2}\\v_{3}\end{array}\right]$"></p><p>the rows are not linearly independent because <img src="s2_eq02946151673702694898.png" alt="$v_{3}=2v_{1}$"></p><p>(i.e) <img src="s2_eq01173836379530996867.png" alt="$\lambda = [2;0;-1]$"></p><pre class="codeinput"><span class="comment">% A Singular Matrix:</span>
+
+X_mat = [3,4,5;0,1,2;6,8,10];
+
+X_mat(3,:)-2.*X_mat(1,:)
+</pre><pre class="codeoutput">
+ans =
+
+     0     0     0
+
+</pre><p>A non-singular matrix:</p><pre class="codeinput">Y_mat = magic(3);
+</pre><p><b>2.2 Eigenvalues and Determinants</b></p><p><img src="s2_eq09275298423194295914.png" alt="$Xy = \mu y$"></p><p>Let the <img src="s2_eq08830444604280721118.png" alt="$y$"> value that solves the above system of equations be called an eigenvector</p><p>and <img src="s2_eq05371638286043275527.png" alt="$\mu$"> be the respective eigen value</p><p>Define the trace of a Matrix as:</p><p><img src="s2_eq18342749046305989961.png" alt="$tr(X) = \sum_{i=1}^{n}\mu_{i}$"></p><p>Define the determinant of a Matrix as:</p><p><img src="s2_eq05878165853639572976.png" alt="$det(X) = \prod_{i=1}^{n}\mu_{i}$"></p><p>Example 2:</p><pre class="codeinput"><span class="comment">% Using Matlab In-built</span>
+disp(<span class="string">'Using Matlab In-Built'</span>)
+disp([det(X_mat),det(Y_mat)])
+
+<span class="comment">% Using our function</span>
+disp(<span class="string">'Using Our Function'</span>)
+disp([my_det(X_mat),my_det(Y_mat)])
+</pre><pre class="codeoutput">Using Matlab In-Built
+     0  -360
+
+Using Our Function
+         0 -360.0000
+
+</pre><p><b>2.3 The rank of a matrix</b></p><p>The (row) rank of a matrix is defined to be the maximum number of linearly independent rows.</p><p>i.e the rank of a matrix is the number of non-zero row in the row-echelon form of the matrix.</p><p><b>Redefining Conditions for the existence of an inverse</b></p><p>The inverse of a squaren matrix exists if and only if it is of <b>full rank</b>.</p><pre>Example 3:</pre><pre class="codeinput"><span class="comment">% Use matlab in-built function</span>
+disp(<span class="string">'Using Matlab In-Built'</span>)
+disp([rank(X_mat),rank(Y_mat)])
+
+<span class="comment">% Use our function</span>
+disp(<span class="string">'Using Our Function'</span>)
+disp([my_rank(X_mat),my_rank(Y_mat)])
+</pre><pre class="codeoutput">Using Matlab In-Built
+     2     3
+
+Using Our Function
+     2     3
+
+</pre><p><b>2.4 The inverse of a Matrix (if it exists)</b></p><p>Use matlab in-built function</p><pre class="codeinput">disp(inv(Y_mat))
+disp(my_inv(Y_mat))
+</pre><pre class="codeoutput">    0.1472   -0.1444    0.0639
+   -0.0611    0.0222    0.1056
+   -0.0194    0.1889   -0.1028
+
+</pre><p>Use our function</p><pre class="codeinput">disp(my_inv(Y_mat))
+</pre><pre class="codeoutput">    0.1472   -0.1444    0.0639
+   -0.0611    0.0222    0.1056
+   -0.0194    0.1889   -0.1028
+
+</pre><p><b>2.5 Symetric and Idempotent Matrices</b></p><p><b>2.5.1 Symetry</b></p><p>A square matrix <img src="s2_eq12362013959998143435.png" alt="$X$"> that satisfies the property <img src="s2_eq15998329826613863458.png" alt="$X=X'$"> is said to be symmetric.</p><p><b>2.5.2 Idempotent</b></p><p>A square matrix <img src="s2_eq12362013959998143435.png" alt="$X$"> is idempotent if <img src="s2_eq00000931768164607085.png" alt="$XX=X$"></p><p>If the matrix is symetric it follows that <img src="s2_eq01561052434796647844.png" alt="$X'X=X$"></p><p>Idempotent matrices have that <img src="s2_eq10565440457548810491.png" alt="$rank(X)=trace(X)$"></p><p>Idempotent matrices are very important in econometrics: Let <img src="s2_eq12362013959998143435.png" alt="$X$"> be an (n,k) matrix of data of <img src="s2_eq05588917572283411153.png" alt="$rank(X)=k$">.  Then the matrix <img src="s2_eq05105436314449124984.png" alt="$M=X(X'X)^{-1}X'$"></p><p>Example 4:</p><p>The data generating process</p><p><img src="s2_eq16608997210749585985.png" alt="$y = \beta_{0} + \beta_{1} x + e$">  Where   <img src="s2_eq14637684342522431612.png" alt="$\,\,\,e\sim \mathcal{N}(0,\sigma^{2})$"></p><pre class="codeinput"><span class="comment">% Number of observation</span>
+rng(4567)
+par.n = 500;
+<span class="comment">% Simulate x</span>
+par.mean_x = 4;
+par.variance_x = 2;
+par.variance_e = 0.1;
+x = par.mean_x +sqrt(par.variance_x).*randn(par.n,1);
+<span class="comment">% Simulate error</span>
+e = 0 + sqrt(par.variance_e).*randn(par.n,1);
+<span class="comment">% Simulate Data Generating Process:</span>
+par.beta0 = 2;
+par.beta1 = 0.5;
+y = par.beta0 + par.beta1.*x +e;
+
+<span class="comment">% Show that $M=X(X'X)^{-1}X'$ is idempotent</span>
+M = x*inv(x'*x)*x';
+M_new = M*M;
+I = (M-M_new).^2;
+disp(<span class="string">'Total Squared Diference:'</span>)
+disp(sum(I,<span class="string">'all'</span>))
+</pre><pre class="codeoutput">Total Squared Diference:
+   6.8891e-32
+
+</pre><p><b>Activity 3: Least Squares Estimation:</b></p><p>Estimate the above model using Least Squares</p><p>Example 5:</p><p>Least Squares Estimate our function</p><pre class="codeinput">vars = ols_esti(y,[ones(par.n,1) x]);
+opt.v_names = {<span class="string">'\beta_{0}'</span>,<span class="string">'\beta_{1}'</span>};
+c_table = array2table(vars.beta_hat',<span class="string">'VariableNames'</span>,opt.v_names);
+disp(<span class="string">'OLS estimates: Our Function'</span>)
+disp(c_table)
+
+
+<span class="comment">% Least Squares Estimate In-Built function</span>
+vars.beta_matlab = regress(y,[ones(par.n,1) x]);
+c_table = array2table(vars.beta_matlab',<span class="string">'VariableNames'</span>,opt.v_names);
+disp(<span class="string">'OLS estimates: In-built'</span>)
+disp(c_table)
+
+<span class="comment">% figure</span>
+figure(1)
+hold <span class="string">on</span>
+plot(x,y,<span class="string">'ko'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'k'</span>)
+plot(x,vars.y_hat,<span class="string">'b-'</span>,<span class="string">'linewidth'</span>,1.1)
+xlabel(<span class="string">'$x$'</span>,<span class="string">'fontsize'</span>,17,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+ylabel(<span class="string">'$y$'</span>,<span class="string">'fontsize'</span>,17,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+</pre><pre class="codeoutput">here
+OLS estimates: Our Function
+    \beta_{0}    \beta_{1}
+    _________    _________
+
+     1.9818       0.51008 
+
+OLS estimates: In-built
+    \beta_{0}    \beta_{1}
+    _________    _________
+
+     1.9818       0.51008 
+
+</pre><img vspace="5" hspace="5" src="s2_01.png" alt=""> <p><b>Activity 4: Using the Symbolic toolbox to do stuff</b></p><p>In this case to find the inverse of a matrix</p><p>My take(purely personal): AVOID using symbolic stuff, not helpfull at all.</p><pre class="codeinput">syms <span class="string">a11</span> <span class="string">a12</span> <span class="string">a13</span> <span class="string">b21</span> <span class="string">b22</span> <span class="string">b23</span> <span class="string">c31</span> <span class="string">c32</span> <span class="string">c33</span>
+A_m = [a11,a12,a13;b21,b22,b23;c31,c32,c33];
+A_inv = inv(A_m);
+disp(A_inv)
+
+syms <span class="string">a</span>
+A_m = [sym(1),sym(0),sym(0);sym(0),sym(1),sym(0);sym(0),sym(0),a];
+A_inv = inv(A_m);
+disp(A_inv)
+</pre><pre class="codeoutput">[ (b22*c33 - b23*c32)/(a11*b22*c33 - a11*b23*c32 - a12*b21*c33 + a12*b23*c31 + a13*b21*c32 - a13*b22*c31), -(a12*c33 - a13*c32)/(a11*b22*c33 - a11*b23*c32 - a12*b21*c33 + a12*b23*c31 + a13*b21*c32 - a13*b22*c31),  (a12*b23 - a13*b22)/(a11*b22*c33 - a11*b23*c32 - a12*b21*c33 + a12*b23*c31 + a13*b21*c32 - a13*b22*c31)]
+[-(b21*c33 - b23*c31)/(a11*b22*c33 - a11*b23*c32 - a12*b21*c33 + a12*b23*c31 + a13*b21*c32 - a13*b22*c31),  (a11*c33 - a13*c31)/(a11*b22*c33 - a11*b23*c32 - a12*b21*c33 + a12*b23*c31 + a13*b21*c32 - a13*b22*c31), -(a11*b23 - a13*b21)/(a11*b22*c33 - a11*b23*c32 - a12*b21*c33 + a12*b23*c31 + a13*b21*c32 - a13*b22*c31)]
+[ (b21*c32 - b22*c31)/(a11*b22*c33 - a11*b23*c32 - a12*b21*c33 + a12*b23*c31 + a13*b21*c32 - a13*b22*c31), -(a11*c32 - a12*c31)/(a11*b22*c33 - a11*b23*c32 - a12*b21*c33 + a12*b23*c31 + a13*b21*c32 - a13*b22*c31),  (a11*b22 - a12*b21)/(a11*b22*c33 - a11*b23*c32 - a12*b21*c33 + a12*b23*c31 + a13*b21*c32 - a13*b22*c31)]
+ 
+[1, 0,   0]
+[0, 1,   0]
+[0, 0, 1/a]
+ 
+</pre><pre class="codeinput"><span class="comment">%-------------------------------------------------------------------------</span>
+<span class="comment">% Adjoint Function</span>
+<span class="keyword">function</span> AD = my_adjoint(X)
+<span class="comment">%{
+</span><span class="comment">This function computes the adjoint matrix of a square matrix
+</span><span class="comment">Input:
+</span><span class="comment">X: Square matrix
+</span><span class="comment">Output:
+</span><span class="comment">D: adjoint of the matrix X
+</span><span class="comment">%}
+</span>[N,M] = size(X);
+<span class="keyword">if</span> N~=M
+    error(<span class="string">'Input matrix not a square matrix.'</span>)
+<span class="keyword">end</span>
+C = NaN(N,N);
+<span class="keyword">for</span> ki=1:N
+   <span class="keyword">for</span> kj = 1:N
+      <span class="comment">% Compute the cofactor matrix</span>
+      C(ki,kj) = (-1)^(ki+kj)*det(X([1:ki-1 ki+1:N],[1:kj-1 kj+1:N]));
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+AD = C';
+<span class="keyword">end</span>
+<span class="comment">%-------------------------------------------------------------------------</span>
+<span class="comment">% Inverse function</span>
+<span class="keyword">function</span> [inv_mat] = my_inv(X)
+<span class="comment">%{
+</span><span class="comment">This function computes the Inverse of a square matrix if it exists
+</span><span class="comment">Input:
+</span><span class="comment">X: Square matrix
+</span><span class="comment">Output:
+</span><span class="comment">inv_mat: Inverse of the matrix X
+</span><span class="comment">%}
+</span>[N,M] = size(X);
+<span class="keyword">if</span> N~=M
+    error(<span class="string">'Input matrix not a square matrix.'</span>)
+<span class="keyword">end</span>
+<span class="keyword">if</span> rank(X)~=N
+    error(<span class="string">'Input matrix not full rank.'</span>)
+<span class="keyword">end</span>
+inv_mat = (1/det(X)).*my_adjoint(X);
+<span class="keyword">end</span>
+<span class="comment">%-------------------------------------------------------------------------</span>
+<span class="comment">% Determinant function</span>
+<span class="keyword">function</span> [D] = my_det(X)
+<span class="comment">%{
+</span><span class="comment">This function computes the Determinant of a square matrix
+</span><span class="comment">Input:
+</span><span class="comment">X: Square matrix
+</span><span class="comment">Output:
+</span><span class="comment">D: determinant of the matrix X
+</span><span class="comment">%}
+</span>[N,M] = size(X);
+<span class="keyword">if</span> N~=M
+    error(<span class="string">'Input matrix not a square matrix.'</span>)
+<span class="keyword">end</span>
+eig_val = eig(X); <span class="comment">% Eigen values</span>
+D = prod(eig_val);
+<span class="keyword">if</span> abs(D)&lt;1e-13
+    D = 0;
+<span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="comment">%-------------------------------------------------------------------------</span>
+<span class="comment">% Rank function</span>
+<span class="keyword">function</span> [rank] = my_rank(X)
+<span class="comment">%{
+</span><span class="comment">This function computes the rank of a square matrix
+</span><span class="comment">Input:
+</span><span class="comment">X: Square matrix
+</span><span class="comment">Output:
+</span><span class="comment">rank: rank of the matrix X
+</span><span class="comment">%}
+</span>[N,M] = size(X);
+<span class="keyword">if</span> N~=M
+    error(<span class="string">'Input matrix not a square matrix.'</span>)
+<span class="keyword">end</span>
+ech_mat = rref(X); <span class="comment">% Echelon reduction</span>
+sum_ech_mat = sum(abs(ech_mat),2);
+I = sum_ech_mat==0;
+rank = N - sum(I);
+<span class="keyword">end</span>
+<span class="comment">%-------------------------------------------------------------------------</span>
+<span class="comment">% OLS</span>
+<span class="keyword">function</span> [vars] = ols_esti(y,X)
+<span class="comment">%{
+</span><span class="comment">This function computes the Least Squares Estimate
+</span><span class="comment">Input:
+</span><span class="comment">y: Dependent Variable    (N,1)
+</span><span class="comment">X: Independent Variables (N,K)
+</span><span class="comment">Output:
+</span><span class="comment">Many stuff you saw in class.
+</span><span class="comment">
+</span><span class="comment">%}
+</span>[par.Nx,par.K] 	= size(X);   <span class="comment">% N=no.obs; K=no.regressors</span>
+[par.Ny] 	= size(y,1); <span class="comment">%</span>
+
+<span class="keyword">if</span> par.Ny~=par.Nx
+    error(<span class="string">'X and y do not have same length'</span>)
+<span class="keyword">end</span>
+par.N = par.Nx; <span class="comment">% Save number of regressots</span>
+
+vars.beta_hat  = X\y;
+<span class="comment">% Coefficients:</span>
+vars.beta_hat_alt  = inv(X'*X)*(X'*y);
+<span class="comment">% Predicted values:</span>
+vars.y_hat 	= X*vars.beta_hat;
+<span class="comment">% Residuals:</span>
+vars.e_hat 	= y-X*vars.beta_hat;
+<span class="comment">% Total Variation of the dependent variable</span>
+vars.SST 	= (y - mean(y))'*(y - mean(y));
+<span class="comment">% (SSE) Sum Squared Residuals</span>
+vars.SSE	= vars.e_hat'*vars.e_hat;
+<span class="comment">% SSR/SST or "r-squared" is the ratio of the variation in y explained by the model and the total variation of y</span>
+vars.R2 	= 1 - (vars.SSE/vars.SST);
+<span class="comment">% Adjusted "r-squared".</span>
+vars.R2A 	= 1 - (vars.SSE/(par.N-par.K))/(vars.SST/(par.N-1));
+
+vars.sigma2_hat = vars.SSE/(par.N-par.K);
+
+<span class="comment">%Variance of estimator:</span>
+vars.var_covar  = vars.sigma2_hat*inv(X'*X);
+vars.SEbeta_hat = sqrt(diag(vars.var_covar));
+disp(<span class="string">'here'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">    0.1472   -0.1444    0.0639
+   -0.0611    0.0222    0.1056
+   -0.0194    0.1889   -0.1028
+
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Econometrics I 
+%  TA Christian AlemÃ¡n
+% 
+% *Session 2: Tuesday 1st, February 2022*
+% 
+% *Activity 1: Basic Matrix Operations* 
+% 
+% *A simple structural national income model*
+% 
+% $Y = C + I_{0}+ G_{0}$
+%
+% $C = a +bY$
+%
+% Boring solution:
+% 
+% $Y^{*} = \frac{1}{1-b}[I_{0}+G_{0}+a]$
+% 
+% $C^{*} = \frac{1}{1-b}[b(I_{0}+G_{0})+a]$
+%
+% Using Linear Algebra: 
+% Transform to $\,\,\,Ax=d$ form 
+%
+% $A = \left[\begin{array}{cc}1 & 0 \\ 0 & a \end{array}\right]$ ,  
+% $x = \left[\begin{array}{c}Y \\ C  \end{array}\right]$ , 
+% $d = \left[\begin{array}{c}I_{0}+G_{0} \\ a \end{array}\right]$
+%
+% $x = A^{-1}d$
+
+% Housekeeping
+clear all
+close all
+clc
+% 
+par.b = 0.5;    % Propensity to consume
+par.a = 1;      % Basic Consumption 
+par.I = 0;      % Investment
+par.G = 0.2;    % Goverment Spending
+A_mat = [1,-1;-par.b,1];
+d_vec = [par.I+par.G; par.a];
+
+% Boring Solution:
+Y_an = 1/(1-par.b).*(par.I+par.G+par.a);
+C_an = 1/(1-par.b).*(par.b*(par.I+par.G)+par.a);
+disp([])
+opt.v_names = {'Y','C'};
+c_table = array2table([Y_an,C_an],'VariableNames',opt.v_names);
+disp('Boring Solution')
+disp('')
+disp(c_table)
+
+% Using Linear Algebra:
+x = inv(A_mat)*d_vec;
+x = A_mat\d_vec;
+c_table = array2table(x','VariableNames',opt.v_names);
+disp('Solution with linear algebra')
+disp('')
+disp(c_table)
+
+%%
+% *Activity 2: Inverses and their properties* 
+% 
+% Define the inverse of matrix $X$ as $X^{-1} = \frac{1}{|X|}adj X$
+% 
+% Such that $XX^{-1}=X^{-1}X = I$
+% 
+% -The inverse is a derived matrix that may not exist.
+% 
+% -The inverse of a matrix is defined if:
+% 
+% # $X$ is a square matrix and
+% # $X$ is is said to be nonsingular. Non-singularity: $\Leftrightarrow$ squareness and linear independence
+% 
+% - More in Non-Singularity:
+% 
+% # A singular matrix has determinant equal to zero
+% # A nonsingular matrix hasa non-zero determinant.
+%
+% *2.1 Linear independence*
+%
+% Let $X$ be matrix $(n,n)$
+% 
+% and $v$ a column vector $(n,1)$ collecting the $n$ row vectors in $X$
+% 
+% Linear independence requiers that the only set of scalars $\lambda_{i}$
+% which can satisfy:
+%
+% $\sum_{i=1}^{n}\lambda_{i}v_{i}=0$
+%
+% are $\lambda_{i}=0$ for all $i$
+%
+% Example 1:
+%
+% $X = \left[\begin{array}{ccc}3 & 4& 5 \\ 0 & 1&2 \\ 6&8&10\end{array}\right] = \left[\begin{array}{c}v_{1}\\v_{2}\\v_{3}\end{array}\right]$   
+% 
+% the rows are not linearly independent because $v_{3}=2v_{1}$
+%
+% (i.e) $\lambda = [2;0;-1]$
+
+% A Singular Matrix:
+
+X_mat = [3,4,5;0,1,2;6,8,10];
+
+X_mat(3,:)-2.*X_mat(1,:)
+
+%%
+%
+% A non-singular matrix:
+
+Y_mat = magic(3);
+
+%%
+% *2.2 Eigenvalues and Determinants*
+%
+% $Xy = \mu y$
+% 
+% Let the $y$ value that solves the above system of equations be called an
+% eigenvector
+% 
+% and $\mu$ be the respective eigen value
+%
+% Define the trace of a Matrix as:
+%
+% $tr(X) = \sum_{i=1}^{n}\mu_{i}$
+% 
+% Define the determinant of a Matrix as:
+%
+% $det(X) = \prod_{i=1}^{n}\mu_{i}$
+%
+%
+% Example 2:
+
+% Using Matlab In-built
+disp('Using Matlab In-Built')
+disp([det(X_mat),det(Y_mat)])
+
+% Using our function
+disp('Using Our Function')
+disp([my_det(X_mat),my_det(Y_mat)])
+
+
+%%
+% *2.3 The rank of a matrix*
+%
+% The (row) rank of a matrix is defined to be the maximum number of linearly independent rows.
+%
+% i.e the rank of a matrix is the number of non-zero row in the row-echelon form of the matrix. 
+% 
+% *Redefining Conditions for the existence of an inverse*
+%
+% The inverse of a squaren matrix exists if and only if it is of *full rank*.
+%
+%  Example 3:
+
+% Use matlab in-built function
+disp('Using Matlab In-Built')
+disp([rank(X_mat),rank(Y_mat)])
+
+% Use our function
+disp('Using Our Function')
+disp([my_rank(X_mat),my_rank(Y_mat)])
+
+%% 
+% *2.4 The inverse of a Matrix (if it exists)*
+%
+% 
+% Use matlab in-built function
+
+disp(inv(Y_mat))
+disp(my_inv(Y_mat))
+%%
+%
+% Use our function
+
+disp(my_inv(Y_mat))
+
+%% 
+% *2.5 Symetric and Idempotent Matrices*
+%
+% *2.5.1 Symetry*
+%
+% A square matrix $X$ that satisfies the property $X=X'$ is said to be
+% symmetric.
+%
+% *2.5.2 Idempotent*
+%
+% A square matrix $X$ is idempotent if $XX=X$
+%
+% If the matrix is symetric it follows that $X'X=X$
+%
+% Idempotent matrices have that $rank(X)=trace(X)$
+%
+% Idempotent matrices are very important in econometrics:
+% Let $X$ be an (n,k) matrix of data of $rank(X)=k$.  Then the matrix
+% $M=X(X'X)^{-1}X'$
+%
+% Example 4:
+%
+% The data generating process 
+% 
+% $y = \beta_{0} + \beta_{1} x + e$  Where   $\,\,\,e\sim \mathcal{N}(0,\sigma^{2})$
+
+% Number of observation 
+rng(4567) 
+par.n = 500;
+% Simulate x
+par.mean_x = 4;
+par.variance_x = 2;
+par.variance_e = 0.1;
+x = par.mean_x +sqrt(par.variance_x).*randn(par.n,1); 
+% Simulate error
+e = 0 + sqrt(par.variance_e).*randn(par.n,1); 
+% Simulate Data Generating Process:
+par.beta0 = 2;
+par.beta1 = 0.5;
+y = par.beta0 + par.beta1.*x +e;
+
+% Show that $M=X(X'X)^{-1}X'$ is idempotent
+M = x*inv(x'*x)*x';
+M_new = M*M;
+I = (M-M_new).^2;
+disp('Total Squared Diference:')
+disp(sum(I,'all'))
+%%
+% *Activity 3: Least Squares Estimation:*
+%
+% Estimate the above model using Least Squares 
+%
+% Example 5:
+%
+% Least Squares Estimate our function
+vars = ols_esti(y,[ones(par.n,1) x]);
+opt.v_names = {'\beta_{0}','\beta_{1}'};
+c_table = array2table(vars.beta_hat','VariableNames',opt.v_names);
+disp('OLS estimates: Our Function')
+disp(c_table)
+ 
+
+% Least Squares Estimate In-Built function
+vars.beta_matlab = regress(y,[ones(par.n,1) x]);
+c_table = array2table(vars.beta_matlab','VariableNames',opt.v_names);
+disp('OLS estimates: In-built')
+disp(c_table)
+
+% figure
+figure(1)
+hold on
+plot(x,y,'ko','MarkerFaceColor','k')
+plot(x,vars.y_hat,'b-','linewidth',1.1)
+xlabel('$x$','fontsize',17,'interpreter','latex')
+ylabel('$y$','fontsize',17,'interpreter','latex')
+
+%%
+% *Activity 4: Using the Symbolic toolbox to do stuff*
+% 
+% In this case to find the inverse of a matrix
+% 
+% My take(purely personal): AVOID using symbolic stuff, not helpfull at all.
+%
+
+syms a11 a12 a13 b21 b22 b23 c31 c32 c33
+A_m = [a11,a12,a13;b21,b22,b23;c31,c32,c33];
+A_inv = inv(A_m);
+disp(A_inv)
+
+syms a
+A_m = [sym(1),sym(0),sym(0);sym(0),sym(1),sym(0);sym(0),sym(0),a];
+A_inv = inv(A_m);
+disp(A_inv)
+
+
+
+%%
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+% Adjoint Function
+function AD = my_adjoint(X)     
+%{
+This function computes the adjoint matrix of a square matrix
+Input:
+X: Square matrix
+Output:
+D: adjoint of the matrix X
+%}
+[N,M] = size(X);
+if N~=M
+    error('Input matrix not a square matrix.')
+end
+C = NaN(N,N);
+for ki=1:N
+   for kj = 1:N
+      % Compute the cofactor matrix
+      C(ki,kj) = (-1)^(ki+kj)*det(X([1:ki-1 ki+1:N],[1:kj-1 kj+1:N]));
+   end
+end
+AD = C';
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+% Inverse function
+function [inv_mat] = my_inv(X)
+%{
+This function computes the Inverse of a square matrix if it exists
+Input:
+X: Square matrix
+Output:
+inv_mat: Inverse of the matrix X
+%}
+[N,M] = size(X);
+if N~=M
+    error('Input matrix not a square matrix.')
+end
+if rank(X)~=N
+    error('Input matrix not full rank.')
+end
+inv_mat = (1/det(X)).*my_adjoint(X);    
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+% Determinant function
+function [D] = my_det(X)
+%{
+This function computes the Determinant of a square matrix
+Input:
+X: Square matrix
+Output:
+D: determinant of the matrix X
+%}
+[N,M] = size(X);
+if N~=M
+    error('Input matrix not a square matrix.')
+end
+eig_val = eig(X); % Eigen values
+D = prod(eig_val);
+if abs(D)<1e-13
+    D = 0;
+end
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+% Rank function
+function [rank] = my_rank(X)
+%{
+This function computes the rank of a square matrix
+Input:
+X: Square matrix
+Output:
+rank: rank of the matrix X
+%}
+[N,M] = size(X);
+if N~=M
+    error('Input matrix not a square matrix.')
+end
+ech_mat = rref(X); % Echelon reduction
+sum_ech_mat = sum(abs(ech_mat),2);
+I = sum_ech_mat==0;
+rank = N - sum(I);
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+% OLS 
+function [vars] = ols_esti(y,X)
+%{
+This function computes the Least Squares Estimate
+Input: 
+y: Dependent Variable    (N,1)
+X: Independent Variables (N,K)
+Output: 
+Many stuff you saw in class.
+
+%}
+[par.Nx,par.K] 	= size(X);   % N=no.obs; K=no.regressors
+[par.Ny] 	= size(y,1); % 
+
+if par.Ny~=par.Nx
+    error('X and y do not have same length')    
+end
+par.N = par.Nx; % Save number of regressots
+
+vars.beta_hat  = X\y; 
+% Coefficients:
+vars.beta_hat_alt  = inv(X'*X)*(X'*y); 
+% Predicted values:
+vars.y_hat 	= X*vars.beta_hat; 
+% Residuals:		 
+vars.e_hat 	= y-X*vars.beta_hat; 	
+% Total Variation of the dependent variable  	 
+vars.SST 	= (y - mean(y))'*(y - mean(y));
+% (SSE) Sum Squared Residuals 
+vars.SSE	= vars.e_hat'*vars.e_hat;
+% SSR/SST or "r-squared" is the ratio of the variation in y explained by the model and the total variation of y	 
+vars.R2 	= 1 - (vars.SSE/vars.SST); 	 
+% Adjusted "r-squared".
+vars.R2A 	= 1 - (vars.SSE/(par.N-par.K))/(vars.SST/(par.N-1));   
+
+vars.sigma2_hat = vars.SSE/(par.N-par.K); 
+
+%Variance of estimator:
+vars.var_covar  = vars.sigma2_hat*inv(X'*X); 
+vars.SEbeta_hat = sqrt(diag(vars.var_covar));
+disp('here')
+end
+##### SOURCE END #####
+--></body></html>

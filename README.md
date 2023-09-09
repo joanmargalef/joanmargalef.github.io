@@ -1,1 +1,2 @@
-# joanmargalef.github.io
+# alemanchris.github.io
+Academic website of Christian Daniel Aleman Pericon

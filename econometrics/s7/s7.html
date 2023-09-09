@@ -1,0 +1,888 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Econometrics I</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-03-04"><meta name="DC.source" content="s7.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Econometrics I</h1><pre>TA Christian Alem&aacute;n</pre><p><b>Session 6: Friday 4, March 2022</b></p><p>Based on WGreene Ch9.</p><p><b>Activity 1: Hetoskedasticity</b></p><p><b>Harvey's Model of Multiplicative heteroscedasticity:</b></p><p>General Formulation:</p><p><img src="s7_eq10299755558174218178.png" alt="$\sigma^{2}_{i}=\sigma^{2}exp(z_{i}'\gamma)$"></p><p>1. Then the case we saw last friday:</p><p><img src="s7_eq01451691423291559546.png" alt="$\sigma^{2}_{i}=\sigma^{2}exp(\gamma z_{i})$"></p><p>2. And Group Wise heteroscedasticity:</p><p><img src="s7_eq07874209537376967969.png" alt="$\sigma^{2}_{g}=\sigma^{2}exp(\gamma_{g})$"></p><p><b>Consider Cost function for the U.S. airline industry:</b></p><p><img src="s7_eq04532888559381515970.png" alt="$ln C_{it} = \beta_{0}+\beta_{1}ln Q_{it}+\beta_{2}ln Q^{2}_{it}+ln PFuel_{it}+\epsilon_{it}$"></p><p><img src="s7_eq13061964707359105853.png" alt="$\epsilon_{i,t}\sim \mathcal{N}(0,\sigma^{2}_{i,t}=\sigma^{2}exp(z_{i,t}'\gamma))$"></p><p><img src="s7_eq13020663965965741279.png" alt="$\sigma^{2}_{i,t}=\sigma^{2}exp(\gamma Load Factor_{i,t})$"></p><p><img src="s7_eq00795545884953567988.png" alt="$\sigma^{2}_{i,t}=exp(\gamma_{1}+\gamma_{2} Load Factor_{i,t})$"> with <img src="s7_eq12633089395383863946.png" alt="$\gamma_{1}=ln \sigma^{2}$"></p><p>Then define the weights as:</p><p><img src="s7_eq02809592154229747760.png" alt="$w_{i,t}=exp(-\gamma_{1}-\gamma_{2} Load Factor_{i,t})$"></p><p>To estimat FGLS:</p><p><img src="s7_eq17438497663501615979.png" alt="$y_{i,t} = y_{i,t}/\sqrt{w_{i,t}}$"> and <img src="s7_eq15314890291005368132.png" alt="$x_{i,t} = x_{i,t}/\sqrt{w_{i,t}}$"></p><pre class="codeinput"><span class="comment">% Housekeeping</span>
+clear <span class="string">all</span>
+close <span class="string">all</span>
+clc
+
+<span class="comment">% Load Data set</span>
+load(<span class="string">'data_harvey'</span>)
+
+X = [ones(size(TableF61.LF,1),1),log(TableF61.Q),(log(TableF61.Q)).^2,log(TableF61.PF)];
+Y = log(TableF61.C);
+X_aux = TableF61.LF;
+[beta_ols,sigma,e,se_ols,se_rob] = my_ols(Y,X);
+
+stat = {<span class="string">'Constant'</span>;<span class="string">'log(Output)'</span>;<span class="string">'log(Output^2)'</span>;<span class="string">'log(Price Fuel)'</span>};
+t = table(stat,beta_ols,se_ols);
+disp(t)
+
+<span class="comment">% Visual Inspection</span>
+figure(1)
+hold <span class="string">on</span>
+grid <span class="string">on</span>
+plot(X_aux,e,<span class="string">'ko'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'k'</span>)
+yline(0)
+ylim([-0.4,0.4])
+ylabel(<span class="string">'Residual'</span>)
+xlabel(<span class="string">'Load Factor'</span>)
+</pre><pre class="codeoutput">           stat            beta_ols     se_ols 
+    ___________________    ________    ________
+
+    {'Constant'       }      9.1382     0.23956
+    {'log(Output)'    }     0.92615     0.03158
+    {'log(Output^2)'  }    0.029145    0.012027
+    {'log(Price Fuel)'}     0.41006    0.018384
+
+</pre><img vspace="5" hspace="5" src="s7_01.png" alt=""> <p><b>White Test</b></p><p><img src="s7_eq17153889864262985390.png" alt="$H_{0}:$"> Homoscedasticity</p><pre class="codeinput">disp(<span class="string">'White Test'</span>)
+[value, pvalue] = my_white(e,X);
+t = table(pvalue);
+disp(t)
+<span class="keyword">if</span> pvalue&lt;0.05
+    disp(<span class="string">'Reject Homoscedasticity'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'Cannot Reject Homoscedasticity'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">White Test
+      pvalue  
+    __________
+
+    4.4529e-05
+
+Reject Homoscedasticity
+</pre><p><b>LR test(Breusch Pagan)</b></p><p><img src="s7_eq17153889864262985390.png" alt="$H_{0}:$"> Homoscedasticity</p><pre class="codeinput">disp(<span class="string">'BP test'</span>)
+[result] = my_BP(e,X);
+<span class="keyword">if</span> result ==1
+    disp(<span class="string">'Reject Homoscedasticity'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'Cannot Reject Homoscedasticity'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">BP test
+Reject Homoscedasticity
+</pre><p>Estimate FGLS: Weighted</p><pre class="codeinput">opt.het = 3;
+[beta_fgls,~,se_fgls] = my_gls(Y,X,X_aux,opt);
+stat = {<span class="string">'Constant'</span>;<span class="string">'log(Output)'</span>;<span class="string">'log(Output^2)'</span>;<span class="string">'log(Price Fuel)'</span>};
+t = table(stat,beta_ols,se_ols,se_rob,beta_fgls,se_fgls);
+disp(t)
+
+<span class="comment">% Estimate FGLS: Inverse of the Variance</span>
+opt.het = 1;
+[beta_fgls,~,se_fgls] = my_gls(Y,X,X_aux,opt);
+stat = {<span class="string">'Constant'</span>;<span class="string">'log(Output)'</span>;<span class="string">'log(Output^2)'</span>;<span class="string">'log(Price Fuel)'</span>};
+t = table(stat,beta_ols,se_ols,se_rob,beta_fgls,se_fgls);
+disp(t)
+</pre><pre class="codeoutput">           stat            beta_ols     se_ols      se_rob     beta_fgls    se_fgls 
+    ___________________    ________    ________    ________    _________    ________
+
+    {'Constant'       }      9.1382     0.23956     0.22595      9.2463      0.21404
+    {'log(Output)'    }     0.92615     0.03158    0.030128     0.92136     0.032285
+    {'log(Output^2)'  }    0.029145    0.012027    0.011346     0.02445     0.011155
+    {'log(Price Fuel)'}     0.41006    0.018384    0.017524     0.40352     0.016592
+
+           stat            beta_ols     se_ols      se_rob     beta_fgls     se_fgls 
+    ___________________    ________    ________    ________    _________    _________
+
+    {'Constant'       }      9.1382     0.23956     0.22595      9.1335      0.032116
+    {'log(Output)'    }     0.92615     0.03158    0.030128     0.92514     0.0054461
+    {'log(Output^2)'  }    0.029145    0.012027    0.011346    0.028878     0.0020759
+    {'log(Price Fuel)'}     0.41006    0.018384    0.017524     0.41027     0.0024223
+
+</pre><p><b>Group Heteroscedasticity:</b></p><p>Example: Gasoline usage in 18 of the 30 OECD countries. The model analyzed is:</p><p><img src="s7_eq07255186413315440172.png" alt="$ln (Gas/Car) = \beta_{0}+\beta_{1}ln Ypc_{i,t}+\beta_{2} ln Price_{i,t}+\beta_{3}ln Carspc_{i,t}+\sum_{j}^{J}D_{j=g}\alpha_{g}+\epsilon_{i,t}$"></p><p>We suspect heteroscedasticity across countries (groups)</p><pre class="codeinput">load(<span class="string">'data_OECD'</span>)
+par.nc = 18;<span class="comment">% Number of countries</span>
+par.nt = 19;<span class="comment">% Number of years</span>
+
+<span class="comment">% Create Country dummy variables:</span>
+Xdum = zeros(par.nc*par.nt,par.nc);
+<span class="keyword">for</span> i = 1:par.nc
+    <span class="keyword">if</span> i ==1
+        uv = i*par.nt;
+        lv = uv-par.nt+1;
+    <span class="keyword">else</span>
+        lv = uv+1;
+        uv = i*par.nt;
+
+    <span class="keyword">end</span>
+    Xdum(lv:uv,i) = 1;
+<span class="keyword">end</span>
+
+Y = TableF91.LGASPCAR;
+X = [TableF91.LINCOMEP,TableF91.LRPMG,TableF91.LCARPCAP,Xdum];
+
+[beta_ols,sigma,e,se_ols,se_rob] = my_ols(Y,X);
+
+stat = {<span class="string">'log(INC PC)'</span>;<span class="string">'log(PRICE)'</span>;<span class="string">'log(CAR PC)'</span>;<span class="string">'C1'</span>;<span class="string">'C2'</span>;<span class="string">'C3'</span>;<span class="string">'C4'</span>;<span class="keyword">...</span>
+    <span class="string">'C5'</span>;<span class="string">'C6'</span>;<span class="string">'C7'</span>;<span class="string">'C8'</span>;<span class="string">'C9'</span>;<span class="string">'C10'</span>;<span class="string">'C11'</span>;<span class="string">'C12'</span>;<span class="string">'C13'</span>;<span class="string">'C14'</span>;<span class="string">'C15'</span>;<span class="string">'C16'</span>;<span class="string">'C17'</span>;<span class="string">'C18'</span>};
+t = table(stat,beta_ols,se_ols);
+disp(t)
+</pre><pre class="codeoutput">         stat          beta_ols     se_ols 
+    _______________    ________    ________
+
+    {'log(INC PC)'}     0.66225    0.071097
+    {'log(PRICE)' }     -0.3217    0.042724
+    {'log(CAR PC)'}    -0.64048    0.028753
+    {'C1'         }      2.2859      0.2212
+    {'C2'         }      2.1656     0.20626
+    {'C3'         }      3.0418     0.21182
+    {'C4'         }      2.3895      0.2016
+    {'C5'         }      2.2048     0.20972
+    {'C6'         }      2.1499     0.21109
+    {'C7'         }      2.3371     0.20818
+    {'C8'         }      2.5923     0.23609
+    {'C9'         }      2.2325     0.23207
+    {'C10'        }      2.3759     0.20523
+    {'C11'        }      2.2348     0.20749
+    {'C12'        }      2.2167     0.19671
+    {'C13'        }      1.6818      0.1574
+    {'C14'        }      3.0263     0.38221
+    {'C15'        }      2.4025     0.22195
+    {'C16'        }        2.51     0.22831
+    {'C17'        }      2.3454      0.2202
+    {'C18'        }      3.0553     0.21275
+
+</pre><p><b>Visual Inspection</b></p><pre class="codeinput">figure(2)
+hold <span class="string">on</span>
+grid <span class="string">on</span>
+plot(TableF91.cn,e,<span class="string">'kx'</span>,<span class="string">'linewidth'</span>,1.1)
+yline(0)
+ylabel(<span class="string">'Residual'</span>)
+xlabel(<span class="string">'Country'</span>)
+</pre><img vspace="5" hspace="5" src="s7_02.png" alt=""> <p>Then the weights are:</p><p><img src="s7_eq04759323211182913197.png" alt="$w_{i,t}= 1/\hat{\sigma}^{2}_{g}$"></p><p><b>White Test</b></p><p><img src="s7_eq17153889864262985390.png" alt="$H_{0}:$"> Homoscedasticity</p><pre class="codeinput">disp(<span class="string">'White Test'</span>)
+[value, pvalue] = my_white(e,X);
+<span class="comment">%t = table(pvalue);</span>
+<span class="comment">%disp(t)</span>
+<span class="keyword">if</span> pvalue&lt;0.05
+    disp(<span class="string">'Reject Homoscedasticity'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'Cannot Reject Homoscedasticity'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">White Test
+Reject Homoscedasticity
+</pre><p><b>LR test(Breusch Pagan)</b></p><p><img src="s7_eq17153889864262985390.png" alt="$H_{0}:$"> Homoscedasticity</p><pre class="codeinput">disp(<span class="string">'BP test'</span>)
+[result] = my_BP(e,X);
+<span class="keyword">if</span> result ==1
+    disp(<span class="string">'Reject Homoscedasticity'</span>)
+<span class="keyword">else</span>
+    disp(<span class="string">'Cannot Reject Homoscedasticity'</span>)
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">BP test
+Reject Homoscedasticity
+</pre><p><b>Estimate FGLS</b></p><pre class="codeinput">opt.het = 0;
+[beta_fgls,~,se_fgls] = my_gls(Y,X,[],opt,par);
+t = table(stat,beta_ols,se_ols,se_rob,beta_fgls,se_fgls);
+disp(t)
+</pre><pre class="codeoutput">         stat          beta_ols     se_ols      se_rob     beta_fgls    se_fgls 
+    _______________    ________    ________    ________    _________    ________
+
+    {'log(INC PC)'}     0.66225    0.071097    0.072774     0.57507     0.028354
+    {'log(PRICE)' }     -0.3217    0.042724    0.053813    -0.27967     0.034088
+    {'log(CAR PC)'}    -0.64048    0.028753    0.038761     -0.5654     0.015632
+    {'C1'         }      2.2859      0.2212     0.22608      2.4371      0.10956
+    {'C2'         }      2.1656     0.20626     0.20983       2.317     0.099057
+    {'C3'         }      3.0418     0.21182     0.22479      3.2065      0.11299
+    {'C4'         }      2.3895      0.2016     0.20783      2.5471     0.099305
+    {'C5'         }      2.2048     0.20972     0.21087      2.3386     0.097857
+    {'C6'         }      2.1499     0.21109     0.21846      2.3007      0.10553
+    {'C7'         }      2.3371     0.20818     0.21801      2.5721      0.10856
+    {'C8'         }      2.5923     0.23609      0.2347      2.7238      0.11029
+    {'C9'         }      2.2325     0.23207     0.22973       2.348      0.10458
+    {'C10'        }      2.3759     0.20523     0.22643      2.5899      0.11453
+    {'C11'        }      2.2348     0.20749     0.21311      2.3962      0.10151
+    {'C12'        }      2.2167     0.19671       0.203      2.3849     0.096395
+    {'C13'        }      1.6818      0.1574     0.17133      1.9031     0.078924
+    {'C14'        }      3.0263     0.38221      0.3918      3.0782       0.1977
+    {'C15'        }      2.4025     0.22195      0.2328      2.5649      0.11524
+    {'C16'        }        2.51     0.22831     0.26168      2.8235      0.12911
+    {'C17'        }      2.3454      0.2202     0.22322      2.4821      0.10613
+    {'C18'        }      3.0553     0.21275     0.22705      3.2152      0.11545
+
+</pre><p><b>Estimate FGLS: Inverse variance weight</b></p><pre class="codeinput">opt.het = 1;
+[beta_fgls,~,se_fgls] = my_gls(Y,X,[],opt,par);
+t = table(stat,beta_ols,se_ols,se_rob,beta_fgls,se_fgls);
+disp(t)
+</pre><pre class="codeoutput">         stat          beta_ols     se_ols      se_rob     beta_fgls     se_fgls 
+    _______________    ________    ________    ________    _________    _________
+
+    {'log(INC PC)'}     0.66225    0.071097    0.072774     0.64884      0.010141
+    {'log(PRICE)' }     -0.3217    0.042724    0.053813    -0.31172      0.005354
+    {'log(CAR PC)'}    -0.64048    0.028753    0.038761     -0.6284     0.0056359
+    {'C1'         }      2.2859      0.2212     0.22608      2.3286      0.029097
+    {'C2'         }      2.1656     0.20626     0.20983      2.1946      0.025651
+    {'C3'         }      3.0418     0.21182     0.22479      3.0753      0.027824
+    {'C4'         }      2.3895      0.2016     0.20783      2.4175      0.025187
+    {'C5'         }      2.2048     0.20972     0.21087      2.2311      0.025489
+    {'C6'         }      2.1499     0.21109     0.21846      2.1824      0.027327
+    {'C7'         }      2.3371     0.20818     0.21801      2.3819      0.027041
+    {'C8'         }      2.5923     0.23609      0.2347      2.6286      0.029047
+    {'C9'         }      2.2325     0.23207     0.22973      2.2587      0.028327
+    {'C10'        }      2.3759     0.20523     0.22643      2.4207      0.027214
+    {'C11'        }      2.2348     0.20749     0.21311      2.2657      0.025942
+    {'C12'        }      2.2167     0.19671       0.203      2.2491      0.024314
+    {'C13'        }      1.6818      0.1574     0.17133      1.7218      0.019432
+    {'C14'        }      3.0263     0.38221      0.3918      3.0477      0.052502
+    {'C15'        }      2.4025     0.22195      0.2328      2.4371      0.029051
+    {'C16'        }        2.51     0.22831     0.26168       2.561      0.031624
+    {'C17'        }      2.3454      0.2202     0.22322      2.3737      0.027897
+    {'C18'        }      3.0553     0.21275     0.22705      3.0885      0.028447
+
+</pre><p><b>Activity 2: Spurious Relations</b></p><p><b>The case of non-stationaty series</b></p><p>Construct two independent random walk proceses</p><p><img src="s7_eq07915983755551983897.png" alt="$y_{t} = y_{t-1}+\epsilon_{y}$"></p><p><img src="s7_eq15938366927888318483.png" alt="$x_{t} = x_{t-1}+\epsilon_{x}$"></p><p>Where <img src="s7_eq02186481835320481341.png" alt="$\epsilon_{y}$"> and <img src="s7_eq06673191073759417747.png" alt="$\epsilon_{x}\sim\mathcal{N}(0,1)$"></p><pre class="codeinput">rng(123);
+n = 100;
+y = zeros(n,1);
+x = zeros(n,1);
+ey = randn(n,1);
+ex = randn(n,1);
+
+<span class="keyword">for</span> i = 2:n
+    y(i) = y(i-1) + ey(i);
+    x(i) = x(i-1) + ex(i);
+<span class="keyword">end</span>
+
+<span class="comment">% Running Regression</span>
+[beta_ols,sigma,e,se_ols,se_rob] = my_ols(y,[ones(n,1),x]);
+
+stat = {<span class="string">'beta'</span>};
+t = table(stat,beta_ols(2),se_ols(2));
+disp(t)
+</pre><pre class="codeoutput">      stat       Var2       Var3  
+    ________    _______    _______
+
+    {'beta'}    0.34974    0.10816
+
+</pre><p>Visual inspection</p><pre class="codeinput">figure(3)
+hold <span class="string">on</span>
+grid <span class="string">on</span>
+plot(1:n,y,<span class="string">'r-'</span>,<span class="string">'linewidth'</span>,1.1)
+plot(1:n,x,<span class="string">'b-'</span>,<span class="string">'linewidth'</span>,1.1)
+legend(<span class="string">'y_{t}'</span>,<span class="string">'x_{t}'</span>)
+xlabel(<span class="string">'t'</span>)
+</pre><img vspace="5" hspace="5" src="s7_03.png" alt=""> <p><b>Detrending the variables</b></p><pre class="codeinput">yd = y(2:end,1)-y(1:end-1,1);
+xd = x(2:end,1)-x(1:end-1,1);
+</pre><p>Visual inspection</p><pre class="codeinput">figure(4)
+hold <span class="string">on</span>
+grid <span class="string">on</span>
+plot(1:n-1,yd,<span class="string">'r-'</span>,<span class="string">'linewidth'</span>,1.1)
+plot(1:n-1,xd,<span class="string">'b-'</span>,<span class="string">'linewidth'</span>,1.1)
+legend(<span class="string">'y_{t}'</span>,<span class="string">'x_{t}'</span>)
+xlabel(<span class="string">'t'</span>)
+
+<span class="comment">% Running Regression</span>
+[beta_ols,sigma,e,se_ols,se_rob] = my_ols(yd,[ones(n-1,1),xd]);
+
+stat = {<span class="string">'beta'</span>};
+t = table(stat,beta_ols(2),se_ols(2));
+disp(t)
+</pre><pre class="codeoutput">      stat        Var2        Var3  
+    ________    ________    ________
+
+    {'beta'}    0.067435    0.084084
+
+</pre><img vspace="5" hspace="5" src="s7_04.png" alt=""> <p>End of Code</p><pre class="codeinput">dert_stop = 1;
+<span class="comment">%-------------------------------------------------</span>
+<span class="keyword">function</span> [beta,e,se] = my_gls(y,x,x_aux,opt,par)
+<span class="comment">%{
+</span><span class="comment">This function computes GLS estimates and
+</span><span class="comment">its standard errors
+</span><span class="comment">inputs: y dependent var
+</span><span class="comment">        x independent vars
+</span><span class="comment">outputs: beta   OLS coefficients
+</span><span class="comment">         sigma  Estimator or variance of error
+</span><span class="comment">         e      Backed residuals
+</span><span class="comment">         se     Standard Errors
+</span><span class="comment">%}
+</span>    [n,k] = size(x);
+    <span class="keyword">if</span> opt.het==1
+        <span class="comment">% Tradicional heteroskedasticity</span>
+        [~,~,e_ols] = my_ols(y, x);
+        e_ols = e_ols.^2;
+        <span class="comment">%C = diag(1./ sqrt(e_ols));</span>
+        C = chol(inv(diag(e_ols)));
+        [beta,~,e,se] = my_ols(C*y, C*x);
+    <span class="keyword">elseif</span> opt.het==2
+        <span class="comment">% AR(1) Errors</span>
+        [~,~,e_ols] = my_ols(y, x);
+
+        <span class="comment">% estimation of AR(1) coefficient</span>
+        ey = e_ols(2:n);
+        ex = e_ols(1:n-1);
+        rho = ex\ey;            <span class="comment">% Estimating the autocorrelation coeff</span>
+        e_auto = ey-ex*rho;
+        var_e = var(e_auto);
+
+        <span class="comment">%factor = eye(n).*var_e./(1-rho^2);     % Cancels out</span>
+        sigma_e = eye(n);
+        <span class="keyword">for</span> i = 1:n
+            <span class="keyword">for</span> j = i+1:n
+                sigma_e(i,j) = rho^(j-i);
+                sigma_e(j,i) = sigma_e(i,j);
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        <span class="comment">%sigma_e = factor.*sigma_e;</span>
+        C = chol(inv(sigma_e));
+        [beta,~,e,se] = my_ols(C*y, C*x);
+    <span class="keyword">elseif</span> opt.het==3
+        <span class="comment">% Weighted Least Squares:</span>
+        [~,~,e_ols] = my_ols(y, x);
+        ye = log(e_ols.^2);
+        xe = [ones(n,1),x_aux];
+        [c,~,~,~] = my_ols(ye, xe);
+        wgt = exp(-c(1)-c(2).*x_aux);
+        [beta,~,e,se] = my_ols(y.*sqrt(wgt), x.*repmat(sqrt(wgt),1,k));
+    <span class="keyword">else</span> <span class="comment">% By group</span>
+        <span class="comment">% lets group the residuals</span>
+        [~,~,e_ols] = my_ols(y, x);
+        e_aux = e_ols.^2;
+        e_aux = reshape(e_aux,par.nt,par.nc);
+        e_aux = mean(e_aux,1);
+        e_aux = repmat(e_aux,par.nt,1);
+        wgt = 1./e_aux(:);
+        [beta,~,e,se] = my_ols(y.*sqrt(wgt), x.*repmat(sqrt(wgt),1,k));
+
+    <span class="keyword">end</span> <span class="comment">% end if</span>
+<span class="keyword">end</span>
+
+<span class="comment">%-------------------------------------------------------------------------</span>
+<span class="keyword">function</span> [beta,sigma,e,se,se_rob] = my_ols(y,x)
+<span class="comment">%{
+</span><span class="comment">This function computes OLS estiamtes and
+</span><span class="comment">its standard errors
+</span><span class="comment">inputs: y dependent var
+</span><span class="comment">        x independent vars
+</span><span class="comment">outputs: beta   OLS coefficients
+</span><span class="comment">         sigma  Estimator or variance of error
+</span><span class="comment">         e      Backed residuals
+</span><span class="comment">         se     Standard Errors
+</span><span class="comment">%}
+</span>    [n,k] = size(x);
+    beta = x\y;
+    sigma = (y-x*beta)'*(y-x*beta)/(n-rank(x));
+    e = y - x*beta;
+    VCV = (e'*e)/n*inv(x'*x);
+    se = sqrt(diag(VCV));
+
+    <span class="comment">% Eicker-White se</span>
+   aux = x.*(kron(e.^2,ones(1,k)));
+	VCV_white = inv(x'*x) * x'*aux* inv(x'*x);
+
+
+    se_rob = sqrt(diag(VCV_white));
+<span class="keyword">end</span>
+<span class="comment">%---------------------------------------------------------</span>
+<span class="keyword">function</span> [value, pvalue] = my_white(e, x)
+<span class="comment">%{
+</span><span class="comment"> White's test for heteroscedasticity
+</span><span class="comment"> Input:
+</span><span class="comment">	e: Residuals
+</span><span class="comment">	x: Independent Variables
+</span><span class="comment">%}
+</span>	n = size(e,1);
+	k = size(x,2) - 1;
+	[~,~,e_ols] =my_ols(e.^2,x);
+    TSS = e.^2 - mean(e.^2);
+	TSS = TSS' * TSS;
+	ESS = e_ols' * e_ols;
+	rsq = 1 - ESS / TSS;  <span class="comment">% the r-square auxiliary</span>
+	value = n*rsq;                  <span class="comment">% Statistic</span>
+	pvalue = 1 - chi2cdf(value,k);  <span class="comment">% Value</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [result] = my_BP(e, x)
+<span class="comment">%{
+</span><span class="comment"> Breusch pagan test for heteroscedasticity
+</span><span class="comment"> Input:
+</span><span class="comment">	e: Residuals
+</span><span class="comment">	x: Independent Variables
+</span><span class="comment">%}
+</span>
+	n = size(e,1);
+	k = size(x,2);
+	<span class="comment">%[~,~,e_ols] =my_ols(e.^2,x);</span>
+
+    g = (e.^2)./((e'*e)./n)-1;
+    LM = 0.5.*(g'*x*inv(x'*x)*x'*g);
+    crit = chi2inv(0.95,k);
+    <span class="keyword">if</span> LM&gt;crit
+        result = 1; <span class="comment">% Reject Ho</span>
+    <span class="keyword">else</span>
+        result = 0; <span class="comment">% Cannot Reject H0</span>
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Econometrics I 
+%  TA Christian Alemán
+% 
+% *Session 6: Friday 4, March 2022*
+%
+% Based on WGreene Ch9.
+%
+% *Activity 1: Hetoskedasticity* 
+%
+% *Harvey's Model of Multiplicative heteroscedasticity:*
+%
+% General Formulation:
+%
+% $\sigma^{2}_{i}=\sigma^{2}exp(z_{i}'\gamma)$
+%
+% 1. Then the case we saw last friday:
+%
+% $\sigma^{2}_{i}=\sigma^{2}exp(\gamma z_{i})$
+% 
+% 2. And Group Wise heteroscedasticity:
+%
+% $\sigma^{2}_{g}=\sigma^{2}exp(\gamma_{g})$
+%
+% *Consider Cost function for the U.S. airline industry:*
+%
+% $ln C_{it} = \beta_{0}+\beta_{1}ln Q_{it}+\beta_{2}ln Q^{2}_{it}+ln PFuel_{it}+\epsilon_{it}$
+%
+% $\epsilon_{i,t}\sim \mathcal{N}(0,\sigma^{2}_{i,t}=\sigma^{2}exp(z_{i,t}'\gamma))$   
+%
+% $\sigma^{2}_{i,t}=\sigma^{2}exp(\gamma Load Factor_{i,t})$
+%
+% $\sigma^{2}_{i,t}=exp(\gamma_{1}+\gamma_{2} Load Factor_{i,t})$ with $\gamma_{1}=ln \sigma^{2}$
+%
+% Then define the weights as:
+%
+% $w_{i,t}=exp(-\gamma_{1}-\gamma_{2} Load Factor_{i,t})$
+%
+% To estimat FGLS:
+%
+% $y_{i,t} = y_{i,t}/\sqrt{w_{i,t}}$ and $x_{i,t} = x_{i,t}/\sqrt{w_{i,t}}$
+
+% Housekeeping
+clear all
+close all
+clc
+
+% Load Data set
+load('data_harvey')
+
+X = [ones(size(TableF61.LF,1),1),log(TableF61.Q),(log(TableF61.Q)).^2,log(TableF61.PF)];
+Y = log(TableF61.C);
+X_aux = TableF61.LF;
+[beta_ols,sigma,e,se_ols,se_rob] = my_ols(Y,X);
+
+stat = {'Constant';'log(Output)';'log(Output^2)';'log(Price Fuel)'};
+t = table(stat,beta_ols,se_ols);
+disp(t)
+
+% Visual Inspection 
+figure(1)
+hold on
+grid on
+plot(X_aux,e,'ko','MarkerFaceColor','k')
+yline(0)
+ylim([-0.4,0.4])
+ylabel('Residual')
+xlabel('Load Factor')
+
+%%
+% *White Test*
+%
+% $H_{0}:$ Homoscedasticity
+
+disp('White Test') 
+[value, pvalue] = my_white(e,X);
+t = table(pvalue);
+disp(t)
+if pvalue<0.05
+    disp('Reject Homoscedasticity')
+else
+    disp('Cannot Reject Homoscedasticity')
+end
+
+
+%%
+% *LR test(Breusch Pagan)*
+%
+% $H_{0}:$ Homoscedasticity
+
+disp('BP test')
+[result] = my_BP(e,X);
+if result ==1
+    disp('Reject Homoscedasticity')
+else
+    disp('Cannot Reject Homoscedasticity')
+end
+
+%%
+% Estimate FGLS: Weighted
+opt.het = 3;
+[beta_fgls,~,se_fgls] = my_gls(Y,X,X_aux,opt);
+stat = {'Constant';'log(Output)';'log(Output^2)';'log(Price Fuel)'};
+t = table(stat,beta_ols,se_ols,se_rob,beta_fgls,se_fgls);
+disp(t)
+
+% Estimate FGLS: Inverse of the Variance
+opt.het = 1;
+[beta_fgls,~,se_fgls] = my_gls(Y,X,X_aux,opt);
+stat = {'Constant';'log(Output)';'log(Output^2)';'log(Price Fuel)'};
+t = table(stat,beta_ols,se_ols,se_rob,beta_fgls,se_fgls);
+disp(t)
+
+%%
+% *Group Heteroscedasticity:*
+%
+% Example: Gasoline usage in 18 of the 30 OECD countries. The model analyzed is:
+% 
+% $ln (Gas/Car) = \beta_{0}+\beta_{1}ln Ypc_{i,t}+\beta_{2} ln Price_{i,t}+\beta_{3}ln Carspc_{i,t}+\sum_{j}^{J}D_{j=g}\alpha_{g}+\epsilon_{i,t}$
+%
+% We suspect heteroscedasticity across countries (groups)
+load('data_OECD')
+par.nc = 18;% Number of countries 
+par.nt = 19;% Number of years
+
+% Create Country dummy variables:
+Xdum = zeros(par.nc*par.nt,par.nc);
+for i = 1:par.nc
+    if i ==1
+        uv = i*par.nt;
+        lv = uv-par.nt+1;
+    else
+        lv = uv+1;
+        uv = i*par.nt;
+        
+    end
+    Xdum(lv:uv,i) = 1;
+end
+
+Y = TableF91.LGASPCAR;
+X = [TableF91.LINCOMEP,TableF91.LRPMG,TableF91.LCARPCAP,Xdum];
+
+[beta_ols,sigma,e,se_ols,se_rob] = my_ols(Y,X);
+
+stat = {'log(INC PC)';'log(PRICE)';'log(CAR PC)';'C1';'C2';'C3';'C4';...
+    'C5';'C6';'C7';'C8';'C9';'C10';'C11';'C12';'C13';'C14';'C15';'C16';'C17';'C18'};
+t = table(stat,beta_ols,se_ols);
+disp(t)
+
+%%
+% *Visual Inspection*
+figure(2)
+hold on
+grid on
+plot(TableF91.cn,e,'kx','linewidth',1.1)
+yline(0)
+ylabel('Residual')
+xlabel('Country')
+
+%%
+% Then the weights are:
+%
+% $w_{i,t}= 1/\hat{\sigma}^{2}_{g}$
+
+%%
+% *White Test*
+%
+% $H_{0}:$ Homoscedasticity
+
+disp('White Test') 
+[value, pvalue] = my_white(e,X);
+%t = table(pvalue);
+%disp(t)
+if pvalue<0.05
+    disp('Reject Homoscedasticity')
+else
+    disp('Cannot Reject Homoscedasticity')
+end
+
+
+%%
+% *LR test(Breusch Pagan)*
+%
+% $H_{0}:$ Homoscedasticity
+
+disp('BP test')
+[result] = my_BP(e,X);
+if result ==1
+    disp('Reject Homoscedasticity')
+else
+    disp('Cannot Reject Homoscedasticity')
+end
+%%
+% *Estimate FGLS*
+
+
+opt.het = 0;
+[beta_fgls,~,se_fgls] = my_gls(Y,X,[],opt,par);
+t = table(stat,beta_ols,se_ols,se_rob,beta_fgls,se_fgls);
+disp(t)
+
+%% 
+% *Estimate FGLS: Inverse variance weight*
+opt.het = 1;
+[beta_fgls,~,se_fgls] = my_gls(Y,X,[],opt,par);
+t = table(stat,beta_ols,se_ols,se_rob,beta_fgls,se_fgls);
+disp(t)
+
+%%
+% *Activity 2: Spurious Relations*
+%
+% *The case of non-stationaty series*
+%
+% Construct two independent random walk proceses
+% 
+% $y_{t} = y_{t-1}+\epsilon_{y}$
+%
+% $x_{t} = x_{t-1}+\epsilon_{x}$
+%
+% Where $\epsilon_{y}$ and $\epsilon_{x}\sim\mathcal{N}(0,1)$
+
+rng(123);
+n = 100;
+y = zeros(n,1);
+x = zeros(n,1);
+ey = randn(n,1);
+ex = randn(n,1);
+
+for i = 2:n 
+    y(i) = y(i-1) + ey(i);
+    x(i) = x(i-1) + ex(i);
+end
+
+% Running Regression
+[beta_ols,sigma,e,se_ols,se_rob] = my_ols(y,[ones(n,1),x]);
+
+stat = {'beta'};
+t = table(stat,beta_ols(2),se_ols(2));
+disp(t)
+
+%%
+% Visual inspection 
+
+figure(3)
+hold on
+grid on
+plot(1:n,y,'r-','linewidth',1.1)
+plot(1:n,x,'b-','linewidth',1.1)
+legend('y_{t}','x_{t}')
+xlabel('t')
+
+%%
+% *Detrending the variables*
+
+yd = y(2:end,1)-y(1:end-1,1);
+xd = x(2:end,1)-x(1:end-1,1);
+
+%%
+% Visual inspection 
+
+figure(4)
+hold on
+grid on
+plot(1:n-1,yd,'r-','linewidth',1.1)
+plot(1:n-1,xd,'b-','linewidth',1.1)
+legend('y_{t}','x_{t}')
+xlabel('t')
+
+% Running Regression
+[beta_ols,sigma,e,se_ols,se_rob] = my_ols(yd,[ones(n-1,1),xd]);
+
+stat = {'beta'};
+t = table(stat,beta_ols(2),se_ols(2));
+disp(t)
+
+
+
+%% 
+% End of Code
+dert_stop = 1;
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+function [beta,e,se] = my_gls(y,x,x_aux,opt,par)
+%{
+This function computes GLS estimates and 
+its standard errors
+inputs: y dependent var
+        x independent vars
+outputs: beta   OLS coefficients
+         sigma  Estimator or variance of error
+         e      Backed residuals
+         se     Standard Errors
+%}
+    [n,k] = size(x); 
+    if opt.het==1
+        % Tradicional heteroskedasticity
+        [~,~,e_ols] = my_ols(y, x);
+        e_ols = e_ols.^2;
+        %C = diag(1./ sqrt(e_ols));
+        C = chol(inv(diag(e_ols)));
+        [beta,~,e,se] = my_ols(C*y, C*x);
+    elseif opt.het==2
+        % AR(1) Errors
+        [~,~,e_ols] = my_ols(y, x);
+
+        % estimation of AR(1) coefficient
+        ey = e_ols(2:n);
+        ex = e_ols(1:n-1);
+        rho = ex\ey;            % Estimating the autocorrelation coeff
+        e_auto = ey-ex*rho;
+        var_e = var(e_auto);
+
+        %factor = eye(n).*var_e./(1-rho^2);     % Cancels out
+        sigma_e = eye(n);
+        for i = 1:n
+            for j = i+1:n
+                sigma_e(i,j) = rho^(j-i);
+                sigma_e(j,i) = sigma_e(i,j);
+            end
+        end
+        %sigma_e = factor.*sigma_e;
+        C = chol(inv(sigma_e));
+        [beta,~,e,se] = my_ols(C*y, C*x);
+    elseif opt.het==3
+        % Weighted Least Squares:
+        [~,~,e_ols] = my_ols(y, x);
+        ye = log(e_ols.^2);
+        xe = [ones(n,1),x_aux];
+        [c,~,~,~] = my_ols(ye, xe);
+        wgt = exp(-c(1)-c(2).*x_aux);
+        [beta,~,e,se] = my_ols(y.*sqrt(wgt), x.*repmat(sqrt(wgt),1,k));
+    else % By group
+        % lets group the residuals
+        [~,~,e_ols] = my_ols(y, x);
+        e_aux = e_ols.^2;
+        e_aux = reshape(e_aux,par.nt,par.nc);
+        e_aux = mean(e_aux,1);
+        e_aux = repmat(e_aux,par.nt,1);
+        wgt = 1./e_aux(:);
+        [beta,~,e,se] = my_ols(y.*sqrt(wgt), x.*repmat(sqrt(wgt),1,k));
+        
+    end % end if
+end
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+function [beta,sigma,e,se,se_rob] = my_ols(y,x)
+%{
+This function computes OLS estiamtes and 
+its standard errors
+inputs: y dependent var
+        x independent vars
+outputs: beta   OLS coefficients
+         sigma  Estimator or variance of error
+         e      Backed residuals
+         se     Standard Errors
+%}
+    [n,k] = size(x);
+    beta = x\y;
+    sigma = (y-x*beta)'*(y-x*beta)/(n-rank(x));
+    e = y - x*beta;
+    VCV = (e'*e)/n*inv(x'*x);
+    se = sqrt(diag(VCV));
+    
+    % Eicker-White se
+   aux = x.*(kron(e.^2,ones(1,k)));
+	VCV_white = inv(x'*x) * x'*aux* inv(x'*x);
+    
+    
+    se_rob = sqrt(diag(VCV_white));
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+function [value, pvalue] = my_white(e, x)
+%{
+ White's test for heteroscedasticity
+ Input:
+	e: Residuals
+	x: Independent Variables
+%}
+	n = size(e,1);
+	k = size(x,2) - 1;	
+	[~,~,e_ols] =my_ols(e.^2,x);
+    TSS = e.^2 - mean(e.^2);
+	TSS = TSS' * TSS;
+	ESS = e_ols' * e_ols;
+	rsq = 1 - ESS / TSS;  % the r-square auxiliary	
+	value = n*rsq;                  % Statistic
+	pvalue = 1 - chi2cdf(value,k);  % Value
+end
+
+function [result] = my_BP(e, x)
+%{
+ Breusch pagan test for heteroscedasticity
+ Input:
+	e: Residuals
+	x: Independent Variables
+%}
+
+	n = size(e,1);
+	k = size(x,2);	
+	%[~,~,e_ols] =my_ols(e.^2,x);
+  
+    g = (e.^2)./((e'*e)./n)-1;
+    LM = 0.5.*(g'*x*inv(x'*x)*x'*g);
+    crit = chi2inv(0.95,k);
+    if LM>crit
+        result = 1; % Reject Ho
+    else
+        result = 0; % Cannot Reject H0
+    end
+  
+end
+##### SOURCE END #####
+--></body></html>

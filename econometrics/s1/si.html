@@ -1,0 +1,362 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Econometrics I</title><meta name="generator" content="MATLAB 9.9"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-01-20"><meta name="DC.source" content="s1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Econometrics I</h1><pre>TA Christian Alem&aacute;n</pre><p><b>Session 1: Friday 21, January 2022</b></p><p><b>Activity 1: Simulations</b></p><p>Simulate a Normal Distribution:</p><p><img src="s1_eq17306737469895591427.png" alt="$x\sim\mathcal{N}(\mu,\sigma^{2})$"></p><pre class="codeinput"><span class="comment">% Housekeeping</span>
+clear <span class="string">all</span>
+close <span class="string">all</span>
+clc
+<span class="comment">% Begin Script</span>
+rng(1234)                 <span class="comment">% Set seed for reproductivity</span>
+<span class="comment">%</span>
+par.N = 500;              <span class="comment">% Number of observations</span>
+var.x_vec = NaN(par.N,3); <span class="comment">% Initialize random variable</span>
+par.sigma = [0.1,1,2];    <span class="comment">% Standard Deviation \sigma</span>
+par.mu    = [0,0,0];      <span class="comment">% Mean  \mu</span>
+
+<span class="comment">% This loop simulates the random variable</span>
+<span class="keyword">for</span> i = 1:3
+   var.x_vec(:,i) =  par.mu(i) + par.sigma(i).*randn(par.N,1);
+<span class="keyword">end</span>
+<span class="comment">% Generate a density histogram</span>
+par.num_bins = [100,50,10];         <span class="comment">% Number of Bins</span>
+opt.norm_type = {<span class="string">'count'</span>,<span class="string">'pdf'</span>};    <span class="comment">% Normalization type</span>
+opt.sel_norm  = 2;                  <span class="comment">% 1: count 2: pdf</span>
+<span class="keyword">for</span> j = 1:3
+    <span class="keyword">for</span> i = 1:3
+       figure(j)
+       subplot(3,1,i)
+       histogram(var.x_vec(:,i),par.num_bins(j),<span class="string">'Normalization'</span>,opt.norm_type{opt.sel_norm})
+       ylabel([opt.norm_type{opt.sel_norm}])
+       title([<span class="string">'Bins $ = \,$'</span>,num2str(par.num_bins(j)),<span class="string">' $\mu=\,$'</span>,num2str(par.mu(i)),<span class="string">' $\sigma^{2}=\, $'</span>,num2str(par.sigma(i)^(2))],<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="s1_01.png" alt=""> <img vspace="5" hspace="5" src="s1_02.png" alt=""> <img vspace="5" hspace="5" src="s1_03.png" alt=""> <p><b>Activity 2: Kernel Density (Estimation)</b></p><p>Histogram:</p><p><img src="s1_eq09990872769297376882.png" alt="$f^{hist}(x)= \frac{1}{N}\sum^{N}_{i=1}\frac{1}{b} \textbf{1}_{x_{i}\in[x-0.5b,x+0.5b]}$"></p><p>Where <img src="s1_eq02044268985122151499.png" alt="$b$"> is the bin width</p><p>Kernel:</p><p><img src="s1_eq12313481586823551591.png" alt="$f^{Kernel}(x)= \frac{1}{N\hat{b}}\sum^{N}_{i=1}K(\frac{x_{i}-x}{b})$"></p><p>Where <img src="s1_eq04683343664734912066.png" alt="$\hat{b}$"> is the bin width</p><p>And <img src="s1_eq08930609791853178425.png" alt="$K(\cdot)$"> is the Kernel function. The most common types are:</p><div><ol><li>Normal</li><li>Box</li><li>Triangle</li><li>Epanechnikov</li></ol></div><p>Figure: Kernel Types</p><p><img vspace="5" hspace="5" src="ks.JPG" alt=""> </p><p>Figure: Kernel Illustration</p><p><img vspace="5" hspace="5" src="ki.png" alt=""> </p><p><b>Practical Example</b></p><pre class="codeinput"><span class="comment">% Pick one simulation:</span>
+par.N = 300; <span class="comment">%5000;                                           % Number of observations</span>
+var.x_vec = par.mu(2) + par.sigma(2).*randn(par.N,1);         <span class="comment">% Simulate again</span>
+
+<span class="comment">% Kernel Parameters</span>
+par.bw = [NaN,1.8,3];                                           <span class="comment">% BandWidth</span>
+opt.kfunc = {<span class="string">'normal'</span>, <span class="string">'box'</span>,<span class="string">'triangle'</span>,<span class="string">'epanechnikov'</span>};        <span class="comment">% Kernel Functions</span>
+var.kdensity = NaN(100,3);                                      <span class="comment">% Initialize Kernel Density</span>
+par.support  = NaN(100,3);                                      <span class="comment">% Initialize Kernel Support</span>
+par.ahk_support = linspace(-4,4,100)';                           <span class="comment">% Ad Hock Support</span>
+
+<span class="comment">% Construct Kernel Density</span>
+<span class="keyword">for</span> i = 1:3
+    <span class="keyword">if</span> i==1
+        [var.kdensity(:,i),par.support(:,i),dbw] = ksdensity(var.x_vec,<span class="string">'Kernel'</span>,opt.kfunc{1});
+        par.bw(i) = dbw; <span class="comment">% Save default Bandwith</span>
+    <span class="keyword">else</span>
+        [var.kdensity(:,i),par.support(:,i),dbw] = ksdensity(var.x_vec,<span class="string">'Kernel'</span>,opt.kfunc{1},<span class="string">'Bandwidth'</span>,par.bw(i));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Obtain theoretical PDF of the normal</span>
+var.true_density = normpdf(par.ahk_support,par.mu(2),par.sigma(2));
+
+
+
+figure(4)
+hold <span class="string">on</span>
+histogram(var.x_vec,par.num_bins(2),<span class="string">'Normalization'</span>,opt.norm_type{opt.sel_norm});
+p2 = plot(par.support(:,1),var.kdensity(:,1),<span class="string">'r-o'</span>,<span class="string">'linewidth'</span>,1.2);
+p3 = plot(par.ahk_support,var.true_density,<span class="string">'b-x'</span>,<span class="string">'linewidth'</span>,1.2);
+legend([p2 p3],{<span class="string">'Kernel Density'</span>,<span class="string">'Underlying Density'</span>})
+ylabel(opt.norm_type{opt.sel_norm})
+
+figure(5)
+hold <span class="string">on</span>
+histogram(var.x_vec,par.num_bins(2),<span class="string">'Normalization'</span>,opt.norm_type{opt.sel_norm});
+p2 = plot(par.support(:,1),var.kdensity(:,1),<span class="string">'r-'</span>,<span class="string">'linewidth'</span>,1.2);
+p3 = plot(par.support(:,2),var.kdensity(:,2),<span class="string">'r--'</span>,<span class="string">'linewidth'</span>,1.2);
+p4 = plot(par.support(:,3),var.kdensity(:,3),<span class="string">'r-.'</span>,<span class="string">'linewidth'</span>,1.2);
+ylabel(opt.norm_type{opt.sel_norm})
+legend([p2,p3,p4],{[<span class="string">'Kernel BW = '</span>,num2str(par.bw(1))],[<span class="string">'Kernel BW = '</span>,num2str(par.bw(2))],[<span class="string">'Kernel BW = '</span>,num2str(par.bw(3))]})
+</pre><img vspace="5" hspace="5" src="s1_04.png" alt=""> <img vspace="5" hspace="5" src="s1_05.png" alt=""> <p><b>Activity 3: Spourious relations</b></p><p><img src="s1_eq14579006254201784225.png" alt="$x_{1} = \beta_{0}+\beta_{1}x_{2}+\epsilon_{1} $ $x_{3} = \alpha_{0}+\alpha_{1}x_{2}+\epsilon_{3}$"></p><pre class="codeinput">rng(4567)                 <span class="comment">% Set seed for reproductivity</span>
+
+<span class="comment">% Generate x_{1},x_{2},x_{3}</span>
+par.N        = 100;
+par.x2_mu    = 3;    <span class="comment">%    % Mean</span>
+par.x2_sigma = 1;         <span class="comment">% Standard Deviation</span>
+par.eps_sigma1 = 0.1;     <span class="comment">% Standard Deviation Error 1</span>
+par.eps_sigma2 = 0.3;     <span class="comment">% Standard Deviation Error 2</span>
+par.beta_0   = 4;
+par.beta_1   = 0.3;
+par.alpha_0  = -1;
+par.alpha_1  = 2;
+
+
+var.x2_vec = par.x2_mu + par.x2_sigma.*randn(par.N,1);
+var.eps_1 = par.eps_sigma1.*randn(par.N,1);
+var.eps_2 = par.eps_sigma2.*randn(par.N,1);
+var.x1_vec = par.beta_0 + par.beta_1.*var.x2_vec+var.eps_1;
+var.x3_vec = par.alpha_0 + par.alpha_1.*var.x2_vec+var.eps_2;
+
+opt.v_names = {<span class="string">'rho(x_{1},x_{2})'</span>,<span class="string">'rho(x_{3},x_{2})'</span>,<span class="string">'rho(x_{1},x_{3})'</span>};
+c_table = array2table([corr(var.x1_vec,var.x2_vec),corr(var.x3_vec,var.x2_vec),corr(var.x1_vec,var.x3_vec)],<span class="string">'VariableNames'</span>,opt.v_names)
+
+
+figure(6)
+plot(var.x1_vec,var.x2_vec,<span class="string">'ko'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'k'</span>)
+xlabel(<span class="string">'$x_{1}$'</span>,<span class="string">'fontsize'</span>,17,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+ylabel(<span class="string">'$x_{2}$'</span>,<span class="string">'fontsize'</span>,17,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+
+figure(7)
+plot(var.x3_vec,var.x2_vec,<span class="string">'ko'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'k'</span>)
+xlabel(<span class="string">'$x_{3}$'</span>,<span class="string">'fontsize'</span>,17,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+ylabel(<span class="string">'$x_{2}$'</span>,<span class="string">'fontsize'</span>,17,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+
+figure(8)
+plot(var.x1_vec,var.x3_vec,<span class="string">'ko'</span>,<span class="string">'MarkerFaceColor'</span>,<span class="string">'k'</span>)
+xlabel(<span class="string">'$x_{1}$'</span>,<span class="string">'fontsize'</span>,17,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+ylabel(<span class="string">'$x_{3}$'</span>,<span class="string">'fontsize'</span>,17,<span class="string">'interpreter'</span>,<span class="string">'latex'</span>)
+</pre><pre class="codeoutput">
+c_table =
+
+  1&times;3 table
+
+    rho(x_{1},x_{2})    rho(x_{3},x_{2})    rho(x_{1},x_{3})
+    ________________    ________________    ________________
+
+        0.95992             0.99146             0.94858     
+
+</pre><img vspace="5" hspace="5" src="s1_06.png" alt=""> <img vspace="5" hspace="5" src="s1_07.png" alt=""> <img vspace="5" hspace="5" src="s1_08.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Econometrics I 
+%  TA Christian AlemÃ¡n
+% 
+% *Session 1: Friday 21, January 2022*
+% 
+% *Activity 1: Simulations* 
+% 
+% Simulate a Normal Distribution: 
+%
+% $x\sim\mathcal{N}(\mu,\sigma^{2})$
+
+% Housekeeping
+clear all
+close all
+clc
+% Begin Script
+rng(1234)                 % Set seed for reproductivity
+% 
+par.N = 500;              % Number of observations  
+var.x_vec = NaN(par.N,3); % Initialize random variable
+par.sigma = [0.1,1,2];    % Standard Deviation \sigma
+par.mu    = [0,0,0];      % Mean  \mu
+
+% This loop simulates the random variable
+for i = 1:3
+   var.x_vec(:,i) =  par.mu(i) + par.sigma(i).*randn(par.N,1);
+end
+% Generate a density histogram
+par.num_bins = [100,50,10];         % Number of Bins
+opt.norm_type = {'count','pdf'};    % Normalization type
+opt.sel_norm  = 2;                  % 1: count 2: pdf
+for j = 1:3
+    for i = 1:3
+       figure(j)
+       subplot(3,1,i)
+       histogram(var.x_vec(:,i),par.num_bins(j),'Normalization',opt.norm_type{opt.sel_norm})  
+       ylabel([opt.norm_type{opt.sel_norm}])
+       title(['Bins $ = \,$',num2str(par.num_bins(j)),' $\mu=\,$',num2str(par.mu(i)),' $\sigma^{2}=\, $',num2str(par.sigma(i)^(2))],'interpreter','latex')
+       
+    end
+end
+%%
+% *Activity 2: Kernel Density (Estimation)*
+% 
+% Histogram:
+% 
+% $f^{hist}(x)= \frac{1}{N}\sum^{N}_{i=1}\frac{1}{b}
+% \textbf{1}_{x_{i}\in[x-0.5b,x+0.5b]}$
+%
+% Where $b$ is the bin width
+%
+% Kernel:
+%
+% $f^{Kernel}(x)=
+% \frac{1}{N\hat{b}}\sum^{N}_{i=1}K(\frac{x_{i}-x}{b})$
+%
+% Where $\hat{b}$ is the bin width
+%
+% And $K(\cdot)$ is the Kernel function. The most common types are:
+% 
+% # Normal
+% # Box
+% # Triangle
+% # Epanechnikov
+%%
+% Figure: Kernel Types 
+%
+% <<ks.JPG>>
+% 
+% Figure: Kernel Illustration
+%
+% <<ki.png>>
+%% 
+% *Practical Example*
+
+% Pick one simulation: 
+par.N = 300; %5000;                                           % Number of observations  
+var.x_vec = par.mu(2) + par.sigma(2).*randn(par.N,1);         % Simulate again
+
+% Kernel Parameters
+par.bw = [NaN,1.8,3];                                           % BandWidth
+opt.kfunc = {'normal', 'box','triangle','epanechnikov'};        % Kernel Functions
+var.kdensity = NaN(100,3);                                      % Initialize Kernel Density
+par.support  = NaN(100,3);                                      % Initialize Kernel Support
+par.ahk_support = linspace(-4,4,100)';                           % Ad Hock Support
+
+% Construct Kernel Density
+for i = 1:3
+    if i==1
+        [var.kdensity(:,i),par.support(:,i),dbw] = ksdensity(var.x_vec,'Kernel',opt.kfunc{1});
+        par.bw(i) = dbw; % Save default Bandwith
+    else
+        [var.kdensity(:,i),par.support(:,i),dbw] = ksdensity(var.x_vec,'Kernel',opt.kfunc{1},'Bandwidth',par.bw(i));
+    end
+end
+
+% Obtain theoretical PDF of the normal
+var.true_density = normpdf(par.ahk_support,par.mu(2),par.sigma(2));
+
+
+
+figure(4)
+hold on
+histogram(var.x_vec,par.num_bins(2),'Normalization',opt.norm_type{opt.sel_norm});  
+p2 = plot(par.support(:,1),var.kdensity(:,1),'r-o','linewidth',1.2);
+p3 = plot(par.ahk_support,var.true_density,'b-x','linewidth',1.2);
+legend([p2 p3],{'Kernel Density','Underlying Density'})
+ylabel(opt.norm_type{opt.sel_norm})
+
+figure(5)
+hold on
+histogram(var.x_vec,par.num_bins(2),'Normalization',opt.norm_type{opt.sel_norm});  
+p2 = plot(par.support(:,1),var.kdensity(:,1),'r-','linewidth',1.2);
+p3 = plot(par.support(:,2),var.kdensity(:,2),'rREPLACE_WITH_DASH_DASH','linewidth',1.2);
+p4 = plot(par.support(:,3),var.kdensity(:,3),'r-.','linewidth',1.2);
+ylabel(opt.norm_type{opt.sel_norm})
+legend([p2,p3,p4],{['Kernel BW = ',num2str(par.bw(1))],['Kernel BW = ',num2str(par.bw(2))],['Kernel BW = ',num2str(par.bw(3))]})
+
+
+
+%% 
+% *Activity 3: Spourious relations*
+%
+% $x_{1} = \beta_{0}+\beta_{1}x_{2}+\epsilon_{1} $
+% $x_{3} = \alpha_{0}+\alpha_{1}x_{2}+\epsilon_{3}$
+
+rng(4567)                 % Set seed for reproductivity
+
+% Generate x_{1},x_{2},x_{3}
+par.N        = 100;
+par.x2_mu    = 3;    %    % Mean
+par.x2_sigma = 1;         % Standard Deviation
+par.eps_sigma1 = 0.1;     % Standard Deviation Error 1
+par.eps_sigma2 = 0.3;     % Standard Deviation Error 2
+par.beta_0   = 4;
+par.beta_1   = 0.3;
+par.alpha_0  = -1;
+par.alpha_1  = 2;
+
+
+var.x2_vec = par.x2_mu + par.x2_sigma.*randn(par.N,1); 
+var.eps_1 = par.eps_sigma1.*randn(par.N,1); 
+var.eps_2 = par.eps_sigma2.*randn(par.N,1); 
+var.x1_vec = par.beta_0 + par.beta_1.*var.x2_vec+var.eps_1;
+var.x3_vec = par.alpha_0 + par.alpha_1.*var.x2_vec+var.eps_2;
+
+opt.v_names = {'rho(x_{1},x_{2})','rho(x_{3},x_{2})','rho(x_{1},x_{3})'};
+c_table = array2table([corr(var.x1_vec,var.x2_vec),corr(var.x3_vec,var.x2_vec),corr(var.x1_vec,var.x3_vec)],'VariableNames',opt.v_names)
+
+
+figure(6)
+plot(var.x1_vec,var.x2_vec,'ko','MarkerFaceColor','k')
+xlabel('$x_{1}$','fontsize',17,'interpreter','latex')
+ylabel('$x_{2}$','fontsize',17,'interpreter','latex')
+
+figure(7)
+plot(var.x3_vec,var.x2_vec,'ko','MarkerFaceColor','k')
+xlabel('$x_{3}$','fontsize',17,'interpreter','latex')
+ylabel('$x_{2}$','fontsize',17,'interpreter','latex')
+
+figure(8)
+plot(var.x1_vec,var.x3_vec,'ko','MarkerFaceColor','k')
+xlabel('$x_{1}$','fontsize',17,'interpreter','latex')
+ylabel('$x_{3}$','fontsize',17,'interpreter','latex')
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
