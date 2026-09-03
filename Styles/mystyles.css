@@ -162,7 +162,7 @@ hr{border:0;border-top:3px solid #474747;margin:20px 0;height: 50px;}
 .w3-light-blue,.w3-hover-light-blue:hover{color:#000!important;background-color:#87CEEB!important}
 .w3-brown,.w3-hover-brown:hover{color:#fff!important;background-color:#795548!important}
 .w3-cyan,.w3-hover-cyan:hover{color:#000!important;background-color:#00bcd4!important}
-.w3-blue-grey,.w3-hover-blue-grey:hover,.w3-blue-gray,.w3-hover-blue-gray:hover{color:#fff!important;background-color:#607d8b!important}
+.w3-blue-grey,.w3-hover-blue-grey:hover,.w3-blue-gray,.w3-hover-blue-gray:hover{color:#fff!important;background-color:#1E6E86!important}
 .w3-green,.w3-hover-green:hover{color:#fff!important;background-color:#4CAF50!important}
 .w3-light-green,.w3-hover-light-green:hover{color:#000!important;background-color:#8bc34a!important}
 .w3-indigo,.w3-hover-indigo:hover{color:#fff!important;background-color:#3f51b5!important}
@@ -193,7 +193,7 @@ hr{border:0;border-top:3px solid #474747;margin:20px 0;height: 50px;}
 .w3-text-light-blue,.w3-hover-text-light-blue:hover{color:#87CEEB!important}
 .w3-text-brown,.w3-hover-text-brown:hover{color:#795548!important}
 .w3-text-cyan,.w3-hover-text-cyan:hover{color:#00bcd4!important}
-.w3-text-blue-grey,.w3-hover-text-blue-grey:hover,.w3-text-blue-gray,.w3-hover-text-blue-gray:hover{color:#607d8b!important}
+.w3-text-blue-grey,.w3-hover-text-blue-grey:hover,.w3-text-blue-gray,.w3-hover-text-blue-gray:hover{color:#1E6E86!important}
 .w3-text-green,.w3-hover-text-green:hover{color:#4CAF50!important}
 .w3-text-hard-blue,.w3-hover-text-hard-blue:hover{color:#151B54!important}
 .w3-text-light-green,.w3-hover-text-light-green:hover{color:#8bc34a!important}
@@ -220,7 +220,7 @@ hr{border:0;border-top:3px solid #474747;margin:20px 0;height: 50px;}
 .w3-border-light-blue,.w3-hover-border-light-blue:hover{border-color:#87CEEB!important}
 .w3-border-brown,.w3-hover-border-brown:hover{border-color:#795548!important}
 .w3-border-cyan,.w3-hover-border-cyan:hover{border-color:#00bcd4!important}
-.w3-border-blue-grey,.w3-hover-border-blue-grey:hover,.w3-border-blue-gray,.w3-hover-border-blue-gray:hover{border-color:#607d8b!important}
+.w3-border-blue-grey,.w3-hover-border-blue-grey:hover,.w3-border-blue-gray,.w3-hover-border-blue-gray:hover{border-color:#1E6E86!important}
 .w3-border-green,.w3-hover-border-green:hover{border-color:#4CAF50!important}
 .w3-border-light-green,.w3-hover-border-light-green:hover{border-color:#8bc34a!important}
 .w3-border-indigo,.w3-hover-border-indigo:hover{border-color:#3f51b5!important}
@@ -246,13 +246,17 @@ hr{border:0;border-top:3px solid #474747;margin:20px 0;height: 50px;}
 
 /* Colors */
 	.w3-text-shadow{text-shadow: 5px 5px 10px #000!important}
-	.w3-text-movepurple,.w3-hover-text-movepurple:hover{color:#607d8b!important}
-	.w3-movepurple,.w3-hover-movepurple:hover{color:#fff!important;background-color:#607d8b!important}
-	.w3-border-movepurple,.w3-hover-border-movepurple:hover{border-color:#607d8b!important}
+	.w3-text-movepurple,.w3-hover-text-movepurple:hover{color:#1E6E86!important}
+	.w3-movepurple,.w3-hover-movepurple:hover{color:#fff!important;background-color:#1E6E86!important}
+	.w3-border-movepurple,.w3-hover-border-movepurple:hover{border-color:#1E6E86!important}
 
 /* Links */
 
-a{color:#607d8b!important}
-ar{color:#151B54!important}
+a{color:#1E6E86!important}
+ar{color:#1E6E86!important}
+
+/* Name = navy (the hard-blue spans that are NOT links keep #151B54, set above).
+   Paper titles = black, even when they are links. */
+.w3-text-hard-blue a,.w3-text-hard-blue a:hover,.w3-hard-blue a,.w3-hard-blue a:hover{color:#000000!important}
 	
 	
