@@ -246,14 +246,13 @@ hr{border:0;border-top:3px solid #474747;margin:20px 0;height: 50px;}
 
 /* Colors */
 	.w3-text-shadow{text-shadow: 5px 5px 10px #000!important}
-	.w3-text-movepurple,.w3-hover-text-movepurple:hover{color:#1E6E86!important}
-	.w3-movepurple,.w3-hover-movepurple:hover{color:#fff!important;background-color:#1E6E86!important}
-	.w3-border-movepurple,.w3-hover-border-movepurple:hover{border-color:#1E6E86!important}
-
+	.w3-text-movepurple,.w3-hover-text-movepurple:hover{color:#1A5E72!important}
+	.w3-movepurple,.w3-hover-movepurple:hover{color:#fff!important;background-color:#1A5E72!important}
+	.w3-border-movepurple,.w3-hover-border-movepurple:hover{border-color:#1A5E72!important}
 /* Links */
 
-a{color:#1E6E86!important}
-ar{color:#1E6E86!important}
+a{color:#1A5E72!important}
+ar{color:#1A5E72!important}
 
 /* Name = navy (the hard-blue spans that are NOT links keep #151B54, set above).
    Paper titles = black, even when they are links. */
@@ -273,12 +272,14 @@ ar{color:#1E6E86!important}
 /* Unselected tabs: light-grey text */
 .w3-bar-item > .w3-row > a.w3-text-dark-grey,
 #navibar > a.w3-text-dark-grey {
-  color: ##919191 !important;
+  color: #b0b0b0 !important;
 }
+
+
 
 /* Unselected tabs on hover: very light-grey square */
 .w3-bar-item > .w3-row > a.w3-text-dark-grey:hover,
 #navibar > a.w3-text-dark-grey:hover {
-  color: #000000 !important;
+  color: #919191 !important;
   background-color: #f1f1f1 !important;
 }
