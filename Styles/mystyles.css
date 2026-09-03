@@ -273,7 +273,7 @@ ar{color:#1E6E86!important}
 /* Unselected tabs: light-grey text */
 .w3-bar-item > .w3-row > a.w3-text-dark-grey,
 #navibar > a.w3-text-dark-grey {
-  color: #b5b5b5 !important;
+  color: ##919191 !important;
 }
 
 /* Unselected tabs on hover: very light-grey square */
